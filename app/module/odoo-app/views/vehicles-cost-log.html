@@ -1,0 +1,85 @@
+<style>
+    img.ui-datepicker-trigger {
+margin-top: -60px;
+margin-left: 350px;
+height: 38px;
+width: 45px;
+}
+    
+</style>
+
+<div>
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Vehicle Cost Entry Form</div>
+  <div class="panel-body" style="margin-left:0%;background:#fff">
+     <form name="vcost_log_entry" ng-submit="submit()">
+        <div class="form-group">
+            <label class="control-label">Vehicle</label>
+            <input required class="form-control" style="width:350px;" placeholder="Select Vehicle..." type="text" ng-model="vehiclecost.vehicle" typeahead-on-select="setVehicle($item)" typeahead="item.model_brand as (item.model_brand+' / '+item.model_name+' / '+item.licence_plate) for item in vehicles | filter:$viewValue | limitTo:10">
+            <input  class="form-control" style="width:350px;" type="text" ng-hide="true" ng-model="vehiclecost.vehicle_id">
+        </div>
+        <div class="form-group">
+            <label class=" control-label">Type</label>
+            <input  class="form-control" style="width:350px;" ng-hide="true" type="text" ng-model="vehiclecost.cost_type_id">
+            
+            <input  style="width:375px;" class="form-control" placeholder="Select Cost type ..." type="text" ng-model="vehiclecost.type" typeahead-on-select="setVehicleCostType($item)" typeahead="item.type for item in vehicleCostType | filter:$viewValue | limitTo:10" >
+            <button required class="btn btn-default" style="border-radius:0px;height: 34px; margin-top:-34px;width:45px;display:inline-block; float: left; margin-left:348px;" title="Click to add new cost type"  ng-click="open_cost_type()"><span class="glyphicon glyphicon-plus-sign"></span></button>           
+        </div>
+        <div class="form-group">
+            <label class="control-label">Date</label>
+            <input required class="form-control" style="width:350px;" type="text" placeholder="Select Date..." ng-model="vehiclecost.date" date-picker />      
+        </div>
+        <div class="form-group">
+            <label class="control-label">Total Price</label>
+            <input required class="form-control" style="width:350px;" type="text" placeholder="Enter cost ..." ng-model="vehiclecost.cost">      
+        </div>
+        <button  ng-disabled="vcost_log_entry.$invalid" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-ok-circle"></span> Submit </button>
+    </form>
+  </div>
+</div>
+
+
+
+   
+
+
+    <script type="text/ng-template" id="cost_type.html">
+        <div class="modal-header">
+        <button type="button" ng-click="cancel()" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+
+        <div class="modal-header">
+        <h4 class="modal-title">Create: Vehicle Cost Type</h4>
+        </div>
+
+        <div class="modal-body">
+        <label class="control-label">Enter Cost Type:</label>
+        <input required class="form-control" type="text" ng-model="cost.type"></input>
+
+        </div>
+
+        <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="submit()"> <span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
+        <button class="btn btn-warning" ng-click="cancel()"> <span class="glyphicon glyphicon-remove-circle"></span> Cancel</button>
+        </div>
+
+        </div>
+    </script>
+
+
+
+<!-- <div class="action-pane">
+    <div style="display: inline-block;float: left;">
+        <h3 style="margin-left: 10px;margin-top: 10px;">Vehicle Cost Entry Form</h3>
+    </div>
+    <div style="display: inline-block;float: right;padding-right:10px; ">
+
+    </div>
+</div> -->
+
+</div>

@@ -1,0 +1,61 @@
+.manage_items_page_content
+{
+	margin:0px;
+	margin-top:130px;
+}
+
+.each_module_main_division
+{
+	display:none;
+	margin-top:40px;
+}
+
+.normal_black_1
+{
+	font-family:Open Sans;
+	font-size:16px;
+}
+
+#add_new_item_category_dd
+{
+	display:inline;
+	//width:300px;
+}
+
+#add_new_item_new_item_t
+{
+	display:inline;
+	//width:300px;
+}
+
+.each_module_operate_division
+{
+	margin-top:40px;
+	display:none;
+}
+
+#added_items_div
+{
+	margin-bottom:20px;
+	font-family:Open Sans;
+	font-size:15px;
+	display:none;
+}
+
+#added_items_div:hover
+{
+	background-color:#DCDCDC;
+}
+
+#disabled_items_div
+{
+	margin-bottom:20px;
+	font-family:Open Sans;
+	font-size:15px;
+	display:none;
+}
+
+#disabled_items_div:hover
+{
+	background-color:#DCDCDC;
+}

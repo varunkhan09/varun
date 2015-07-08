@@ -1,0 +1,115 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Driver Information</div>
+  <div class="panel-body" style="margin-left:0%;background:#fff">
+        
+
+            <div ng-controller="ViewDriverCtrl">
+         
+        <div style="display: inline-block;float: right;padding-right:10px; ">
+            <button class="btn btn-default" style="margin-left: 10px;margin-top:5px;" ng-click="cancel_view_driver()">
+            <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
+            </button>
+        </div>
+
+    <input type="text" ng-hide="true" ng-model="driver.did">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">Personal Information</div>
+        <div class="panel-body">
+            <table class="table-responsive">
+                <tr>    
+                    <td class="td-align"> <label>Title </label> </td><td width="50%">{{driver.title}}</td>       
+                </tr>
+
+                <tr>
+                    <td class="td-align"> <label>Name </label> </td> <td width="50%">{{driver.name}}  {{driver.lastname}}</td>                 
+                </tr>
+
+                <tr>
+                    <td class="td-align"><label>Company </label> </td><td width="50%"> {{driver.company}}</td>                 
+                </tr>
+
+                <tr>
+                    <td class="td-align"><label>Tags </label></td> <td width="50%"> {{driver.tags}}</td>                      
+                </tr>   
+                <tr>
+                    <td class="td-align"><label>Job Position</label></td><td width="50%">{{driver.job_profile}}</td>           
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Address</h3>
+        </div>
+        <div class="panel-body">
+            <table>
+                <tr>
+                    <td width="50%">
+                        <div style="width: 100%;  padding: 10px; border-right:1px #ccc dotted;">
+                            <table>
+                                <tr>
+                                    <td class="td-align"><label>Street</label></td><td width="50%">{{driver.street1}}<br> {{driver.street2}}</td>                
+                                </tr>
+                                <tr>
+                                    <td class="td-align"><label>City</label></td><td width="50%">{{driver.city}}</td>                         
+                                </tr>
+                                <tr>
+                                    <td class="td-align"><label>State</label></td><td width="50%">{{driver.state}}</td>                                
+                                </tr>
+
+                                <tr>
+                                    <td class="td-align"><label>ZIP</label></td><td width="50%">{{driver.zipcode}}</td>                                
+                                </tr>
+                                <tr>
+                                    <td class="td-align"><label>Country</label></td><td width="50%">{{driver.country}}</td>                                
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+
+                    <td width="50%">
+                        <div style="width: 400px; padding: 10px;margin-left:25px; ">
+                            <table>
+                                <tr>
+                                    <td class="td-align"><label>Phone</label></td><td width="50%">{{driver.phoneno}}</td>                                
+                                </tr>
+                                <tr>
+                                    <td class="td-align"><label>Mobile</label></td><td width="50%">{{driver.mobileno}}</td>                               
+                                </tr>
+                                <tr>
+                                    <td class="td-align"><label>Fax</label></td><td width="50%">{{driver.fax}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-align"><label>Email</label></td> <td width="50%">{{driver.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-align"><label>Website</label></td><td width="50%">{{driver.website}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+ 
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+
+
+

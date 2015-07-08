@@ -1,0 +1,131 @@
+
+<div ng-controller="ViewDriverCtrl">
+    <h4>{{page}}</h4>
+    <form>
+    
+        <input type="text" ng-hide="true" ng-model="driver.did">
+    <table>
+        <tr>
+            <td>
+                <label>Name: </label>
+               
+            </td>
+            <td>{{driver.name}}</td>
+
+        </tr>
+        <tr>
+            <td>
+                 <label>Company: </label>
+            </td>
+            <td>
+                {{driver.company}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <label>Tags: </label>
+            </td>
+            <td>
+                {{driver.tags}}
+            </td>
+        </tr>
+    </table>
+    <br>
+
+    <br>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td width="1%"><label>Address</label></td>
+                                <td width="99%">
+                                    <div>
+                                      
+                                            <table>
+                                                <tr>
+                                                    <td>Street:</td>
+                                                    <td>{{driver.street}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>City:</td>
+                                                    <td>{{driver.city}}</td>
+                                                </tr>
+                                                  <tr>
+                                                    <td>State</td>
+                                                    <td>{{driver.state}}</td>
+                                                </tr>
+                                                
+                                                 <tr>
+                                                    <td>ZIP</td>
+                                                    <td>{{driver.zipcode}}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td>Country</td>
+                                                    <td>{{driver.country}}</td>
+                                                </tr>
+                                                
+                                            </table>
+                                           
+                                     
+
+                                       
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="1%"><label>Website</label></td>
+                                <td width="99%">
+                                    <div>
+                                      {{driver.website}}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                </td>
+
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td width="1%"><label>Job Position</label></td>
+                                <td width="99%"><span>{{driver.job_profile}}</span></td>
+                            </tr>
+                            <tr>
+                                <td width="1%"><label>Phone</label></td>
+                                <td width="99%"><span>{{driver.phoneno}}</span></td>
+                            </tr>
+                            <tr>
+                                <td width="1%"><label>Mobile</label></td>
+                                <td width="99%"><span>{{driver.mobileno}}</span></td>
+                            </tr>
+                            <tr>
+                                <td width="1%"><label>Fax</label></td>
+                                <td width="99%"><span>{{driver.fax}}</span></td>
+                            </tr>
+                            <tr>
+                                <td width="1%"><label>Email</label></td>
+                                <td width="99%"><span>{{driver.email}}</span></td>
+                            </tr>
+                            <tr>
+                                <td width="1%"><label>Title</label></td>
+                                <td width="99%"><span>{{driver.title}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+   
+    </form>
+</div>

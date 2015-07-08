@@ -1,0 +1,69 @@
+
+<style type="text/css">
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+padding: 3px;
+line-height: 1.42857143;
+vertical-align: top;
+/*border-top: 1px solid #ddd;*/
+}
+
+</style>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Shop's Driver List</div>
+          <div class="panel-body">
+            <div ng-controller="driverListCtrl">
+              <div ng-show='list_driver_flag'>
+
+                 <div class="search-input">
+                    <input style="width: 100%;" type="text" placeholder="Search Driver using keyword" ng-model='search.$'>
+                </div>
+                
+                   <table style="background:#fff;margin-left:0%;width:100%;text-align:left;margin-top:10px;" class="table table-stripped table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width:8%;">#</th>
+                            <th style="width:22%;">Driver Name</th>
+                            <th style="width:20%;">Phone</th>
+                            <th style="width:20%;">Mobile No</th> 
+                            <th style="width:25%;float:right;text-align: left;"> Action </th>        
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                         <tr ng-repeat="driver in drivers |filter:search | orderBy:'name' | limitTo : 10 ">
+                            <td> {{$index+1}}</td>
+                            <td> {{driver.name }} {{driver.lastname }} </td>
+                            <td> {{driver.phoneno}} </td>
+                            <td> {{driver.mobileno}} </td>
+                            <td align="right"> 
+                               <!--  <button class="btn btn-primary" ng-click="edit_driver(driver.did)">  <span class="glyphicon glyphicon-edit"></span> Edit </button> -->
+                                <button class="btn btn-info" ng-click="view_driver(driver.did)">  <span class="glyphicon glyphicon-eye-open"></span> View </button>
+                              <!--   <button class="btn btn-danger" ng-click="delete_driver(driver.did)"> <span class="glyphicon glyphicon-remove-circle"></span> Delete </button> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> 
+              </div>  
+
+           <!--  <div ng-show='btn_create_driver' class="action-pane">
+                 <div style="display: inline-block;float: left;">
+                    <h3 style="margin-left: 10px;margin-top: 10px;">Driver List</h3>
+                </div>
+                
+                 <div style="display: inline-block;float: right;padding-right:10px; ">
+                     <button class="btn btn-default" style="margin-left: 10px;margin-top: 10px;" ng-click="create_driver()"> <span class="glyphicon glyphicon-plus-sign"></span> Add Driver</button>
+                </div>   
+            </div>
+ -->
+
+        </div>
+      </div>
+</div>
+
+
+
+
+

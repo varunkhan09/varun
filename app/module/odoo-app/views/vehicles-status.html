@@ -1,0 +1,21 @@
+<div class="jumbotron text-center" >
+    <h4 class="text-muted">Vehicles Status</h4>
+</div>
+
+<div class="vs-status-container container-fluid" ng-controller="vehiclesStatusController">
+    <div class="vs-status-container-action-nav-pane container-fluid"> 
+        <ul class="nav nav-tabs">
+            <li role="presentation" ng-repeat="item in screens" ng-class="{active: $index === selected}">
+                <a href="" ng-click="setVehicleStatusScreen($index)">
+                    <strong>{{ item.name }}</strong>
+                </a>
+            </li>
+        </ul>
+        
+    </div>
+    <div class="vs-status-container-action-pane-body container-fluid" ng-show="showVehiclesStatusScreen"> 
+    <div ng-include="getVehicleStatusScreen()"></div>
+      
+    </div>
+   
+</div>

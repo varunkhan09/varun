@@ -1,0 +1,237 @@
+<style>
+    img.ui-datepicker-trigger {
+        height: 35px;
+        width: 30px;
+        margin-top: -30px;
+        margin-left: 95px;
+    }
+
+    /*.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        padding: 2px; 
+        line-height: 1.25;
+        vertical-align: top;
+        border-top: 0px solid #ddd;
+    }*/
+
+.col-sm-6.control-label {
+    width: 198px;
+}
+
+</style>
+
+
+
+<div ng-controller="odoMeterController" class="panel panel-default">
+  <div class="panel-heading">Vehicle's Odometer Logs</div>
+  <div class="panel-body" style="background:#fff;">
+      
+
+<div >
+
+    <div class="table-responsive">
+        <table style="background:#fff;margin-left:0%;width:100%;text-align:left; font-size:13px;" class="table table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th>#Ref ID</th>
+                    
+<!--                    <th><input type="checkbox" ng-checked="allchkboxVal" ng-model="allchkbox" ng-change="check_uncheck_all()"/></th>-->
+                    <th>Date</th>
+                    <th>Vehicle</th>
+                    <th>Opening Odometer</th>
+                    <th>Closing Odometer</th>
+                     <th>Odometer</th>
+                      <th>Price</th>
+<!--                    <th>Unit</th>-->
+                    <th>#Edit Ref ID</th>
+                    <th ng-hide="add_new_odometer_table_row">Comment</th>
+                    <th ng-hide="add_new_odometer_table_row">Action</th>
+<!--                    <th ng-hide="add_new_odometer_table_row">#Edit Ref ID</th>
+                    <th ng-hide="add_new_odometer_table_row">Comment</th>
+                    <th ng-hide="add_new_odometer_table_row">Action</th>-->
+                </tr>
+            </thead>
+
+            
+            
+            
+            
+            <tr ng-show='add_new_odometer_table_row'>
+                <td ng-hide="true"><input type="text" ng-model="vid"> </td>
+
+               <!--<td><input type="checkbox" ng-model='ncheckbox'/></td> -->
+                 <td></td>
+
+                <td>
+                    <input style="width:97px;margin-bottom: -15px;" class="form-control" type="text" 
+                           ng-model="ndate" date-picker />
+                </td>
+                <td>
+                    <input type="text" ng-hide="true" ng-model='nvid'>
+                    
+                    <input class="form-control" type="text" readonly 
+                           ng-model="vehicle" typeahead-on-select="setVehicle($item)" 
+                           typeahead="item.model_brand as (item.model_brand+' / '+item.model_name+' / '+item.licence_plate) for item in vehicles | filter:$viewValue | limitTo:10">
+                </td>
+               
+                <td><input decimal-point class="form-control" placeholder="0.00" type="text" ng-model="nop_odometer"></td>
+                <td><input decimal-point class="form-control" placeholder="0.00" type="text" ng-model="ncls_odometer"></td>
+                <td></td>
+                 
+                <td><input class="form-control" type="text" readonly ng-model="nunit"></td>
+                
+                <td ng-hide="add_new_odometer_table_row"></td>
+                <td ng-hide="add_new_odometer_table_row"></td>
+               
+            </tr>
+
+            <tr ng-repeat='odometer in odometerRecord'>
+                <td>OD-{{odometer.id}}/{{vid}}</td>
+<!--                <td> <input type="checkbox" ng-model='odometer.checkbox'/> </td>-->
+                <td> {{odometer.date}}</td>
+                <td> {{odometer.model_brand + '/' + odometer.model_name + '/' + odometer.licence_plate}} </td>
+<!--                <td> {{odometer.cls_odometer - odometer.op_odometer  }}</td>-->
+                <td> {{odometer.op_odometer   }}</td> 
+                <td> {{odometer.cls_odometer }}</td> 
+                
+                <td> {{odometer.cls_odometer - odometer.op_odometer  }} Km</td> 
+                 <td> {{(odometer.cls_odometer - odometer.op_odometer) * 2.25   | currency:"&#8377;"  }} </td> 
+                 
+              
+<!--                <td> {{odometer.unit}}</td>-->
+                 <td>{{odometer.edited_ref}}</td>
+                 <td ng-hide="add_new_odometer_table_row">{{odometer.comment}}</td>
+                <td  ng-hide="add_new_odometer_table_row">
+                    <button class="btn btn-primary" ng-click="edit_odometer_entry('OD-',odometer.id,vid)"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
+            </tr>
+        </table>
+    </div>
+<!-- class="action-pane" --> 
+        <div ng-show='create_odometer_entry_div' >  
+         <!-- <div style="display: inline-block;float: left;">
+            <h3 style="margin-left: 10px;margin-top: 10px;">Vehicle's Odometer Log List</h3>
+          </div> -->
+         <div style="display: inline-block;float: right;padding-right:10px; ">
+         <button style="margin-left: 10px;margin-top: 10px;" class="btn btn-default" ng-click="create_odometer_entry()">
+             <span class="glyphicon glyphicon-plus-sign"></span> Create Odometer Log
+         </button>
+     </div> 
+      
+    </div>
+
+    
+    
+   <!--  class="action-pane" -->
+
+    <div ng-show='save_cancel_div_toggle' >
+       <!--  <div style="display: inline-block;float: left;">
+            <h3 style="margin-left: 10px;margin-top: 10px;">Vehicle's Odometer Log Entry</h3>
+          </div> -->
+        
+         <div style="display: inline-block;float: right;padding-right:10px; ">
+        <button type="button" style="margin-left: 10px;margin-top: 10px;" class="btn btn-primary" 
+                ng-click="add_odometer_entry(vid, nvid, ncheckbox, ndate, nop_odometer,ncls_odometer, nunit)">
+           <span class="glyphicon glyphicon-ok-circle"></span> Save
+        </button>
+        <button type="button" style="margin-left: 10px;margin-top: 10px;" class="btn btn-warning" ng-click="cancel_odometer_entry()">
+            <span class="glyphicon glyphicon-remove-circle"></span> Cancel 
+        </button> 
+         </div>
+        
+    </div>
+
+    
+    
+    
+    
+    
+    
+<script type="text/ng-template" id="editOdometer.html">
+
+  <div class="modal-header">
+    <button type="button" ng-click="cancel()" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title">Edit: Odometer {{edited_ref}}</h4>
+  </div>
+
+        
+  <form class="form-horizontal" role="form" ng-submit="submit()">       
+      <div class="modal-body">
+            <div class="form-group">
+               <label for="o1" class="col-sm-6 control-label">Date</label>
+               <div class="col-sm-6">
+                   <input id="o1" type="text" class="form-control" style="width:110px; margin-bottom:-15px; " placeholder="Select date" ng-model="odate" date-picker />
+               </div>
+            </div>
+          
+
+            <div class="form-group">
+              <label for="o2" class="col-sm-6 control-label">Vehicle</label>   
+               <div class="col-sm-6">
+                  <input id="o2" type="text" class="form-control" placeholder="Search" ng-model="ovehicle" typeahead-on-select="setVehicle($item)" typeahead="item.model_brand as (item.model_brand+' / '+item.model_name+' / '+item.licence_plate) for item in ovehicles | filter:$viewValue | limitTo:10">
+                  <input type="text" class="form-control" ng-hide="true" ng-model="up_vehicle_id">     
+              </div>
+            </div>
+          
+<!--        
+            <div class="form-group">
+              <label class="control-label">Odometer Value</label>
+              <input type="text" placeholder="Enter Odometer Value" class="form-control" ng-model="ometervalue"/>
+            </div>
+      -->
+
+            <div class="form-group">
+              <label for="o3" class="col-sm-6 control-label">Opening Odometer</label>   
+               <div class="col-sm-6">
+                  <input decimal-point id="o3" type="text" placeholder="0.00" class="form-control" ng-model="op_odometer"/>     
+              </div>
+            </div>
+
+             <div class="form-group">
+              <label for="o4" class="col-sm-6 control-label">Closing Odometer</label>   
+               <div class="col-sm-6">
+                  <input decimal-point id="04" type="text" placeholder="0.00" class="form-control" ng-model="cls_odometer"/> 
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="o5" class="col-sm-6 control-label">Unit</label>   
+               <div class="col-sm-6">
+                  <input id="o5" type="text" class="form-control" readonly ng-model="ounit"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="o6" class="col-sm-6 control-label">Comment</label>
+              <div class="col-sm-6">
+                 <textarea id="o6" placeholder="Enter comment to edit if any ..." class="form-control" ng-model='comment' row='3' col='15'/> 
+
+              </div>
+            </div>
+         
+          </div> 
+          
+          
+          <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" ng-click="cancel()">  
+                    <span class="glyphicon glyphicon-ok-circle"></span> Submit
+                </button>
+
+                <button class="btn btn-warning" ng-click="cancel()">
+                  <span class="glyphicon glyphicon-remove-circle"></span> Cancel
+                </button>         
+          </div>
+
+          
+        </form> 
+</script>
+    
+</div>
+
+
+
+  </div>
+</div>
+
+
+

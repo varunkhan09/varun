@@ -1,0 +1,684 @@
+(function(API) {
+    API.textAlignCenter = function(txt, options, x, y) {
+        options = options || {};
+        if (options.align === "center") {
+            var fontSize = this.internal.getFontSize();
+            var pageWidth = this.internal.pageSize.width;
+            txtWidth = this.getStringUnitWidth(txt) * fontSize / this.internal.scaleFactor;
+            x = (pageWidth - txtWidth) / 2;// Calculate text's x coordinate
+        }
+        this.text(txt, x, y);
+    };
+})(jsPDF.API);
+
+
+
+(function(API) {
+    var rObj = {}
+    , hObj = {}
+    , data = []
+            , dim = []
+            , columnCount
+            , rowCount
+            , width
+            , heigth
+            , fdata = []
+            , sdata = []
+            , SplitIndex = []
+            , cSplitIndex = []
+            , indexHelper = 0
+            , heights = []
+            , fontSize
+            , jg
+            , i
+            , tabledata = []
+            , x
+            , y
+            , xOffset
+            , yOffset
+            , iTexts
+            , start
+            , end
+            , ih
+            , length
+            , lengths
+            , row
+            , obj
+            , value
+            , nlines
+            , nextStart
+            , propObj = {}
+    , pageStart = 0;
+
+// Inserts Table Head row
+
+    API.insertHeader1 = function(data) {
+        rObj = {}, hObj = {};
+        rObj = data[0];
+        for (var key in rObj) {
+            hObj[key] = key;
+        }
+        data.unshift(hObj);
+    };
+
+// intialize the dimension array, column count and row count
+
+    API.initilizeVendorPaymentChallanPDF = function(data, marginConfig, firstpage) {
+        if (firstpage) {
+            dim = [marginConfig.xstart, marginConfig.tablestart, this.internal.pageSize.width - marginConfig.xstart - 20 - marginConfig.marginright, 250, marginConfig.ystart, marginConfig.marginright];
+        } else {
+            dim = [marginConfig.xstart, marginConfig.ystart, this.internal.pageSize.width - marginConfig.xstart - 20 - marginConfig.marginright, 250, marginConfig.ystart, marginConfig.marginright];
+        }
+        columnCount = this.vendorPaymentChallanCalColumnCount(data);
+        rowCount = data.length;
+        width = (dim[2] / columnCount);
+        height = dim[2] / rowCount;
+        dim[3] = this.vendorPaymentChallanColumnRowDimension(data, dim);
+    };
+
+//draws table on the document 
+
+    API.drawVendorPaymentChallanTable = function(table_DATA, marginConfig) {
+
+        fdata = [], sdata = [];
+        SplitIndex = [], cSplitIndex = [], indexHelper = 0;
+        heights = [];
+        fontSize = this.internal.getFontSize();
+        if (!marginConfig) {
+            maringConfig = {
+                xstart: 20,
+                ystart: 20,
+                tablestart: 20,
+                marginright: 20,
+                xOffset: 10,
+                yOffset: 10
+            };
+        } else {
+            propObj = {
+                xstart: 20,
+                ystart: 20,
+                tablestart: 20,
+                marginright: 20,
+                xOffset: 10,
+                yOffset: 10
+            };
+            for (var key in propObj) {
+                if (!marginConfig[key])
+                {
+                    marginConfig[key] = propObj[key];
+                }
+            }
+        }
+
+        pageStart = marginConfig.tablestart;
+        xOffset = marginConfig.xOffset;
+        yOffset = marginConfig.yOffset;
+
+        this.initilizeVendorPaymentChallanPDF(table_DATA, marginConfig, true);
+
+        if ((dim[3] + marginConfig.tablestart) > (this.internal.pageSize.height)) {
+            jg = 0;
+            cSplitIndex = SplitIndex;
+            cSplitIndex.push(table_DATA.length);
+            for (var ig = 0; ig < cSplitIndex.length; ig++) {
+                tabledata = [];
+                tabledata = table_DATA.slice(jg, cSplitIndex[ig]);
+
+                this.insertHeader1(tabledata);
+                this.pdf1(tabledata, dim, true, false);
+                pageStart = marginConfig.ystart;
+                this.initilizeVendorPaymentChallanPDF(tabledata, marginConfig, false);
+                jg = cSplitIndex[ig];
+                if ((ig + 1) != cSplitIndex.length) {
+                    this.addPage();
+                }
+            }
+        } else {
+            this.insertHeader1(table_DATA);
+            this.pdf1(table_DATA, dim, true, false);
+        }
+        return nextStart;
+    };
+
+//calls methods in a sequence manner required to draw table
+
+    API.pdf1 = function(table, rdim, hControl, bControl) {
+        columnCount = this.vendorPaymentChallanCalColumnCount(table);
+//
+//        console.log("col count");
+//        console.log(columnCount);
+
+        rowCount = table.length;
+//        console.log("row count");
+//        console.log(rowCount);
+//        // col row dimension
+
+        rdim[3] = this.vendorPaymentChallanColumnRowDimension(table, rdim);
+
+        width = rdim[2] / columnCount;
+        height = rdim[2] / rowCount;
+        /**
+         * to draw row for vendor table.
+         */
+        this.drawVendorPaymentChallanRows(rowCount, rdim, hControl);
+        /**
+         * to draw column for vendor table.
+         */
+        this.drawPaymentVendorChallanColumns(columnCount, rdim);
+        /**
+         * to insert data not image for vendor table.
+         */
+
+        nextStart = this.insertDataToTable(rowCount, columnCount, rdim, table, bControl);
+        return nextStart;
+    };
+
+//inserts text into the table 
+
+    API.insertDataToTable = function(iR, jC, rdim, data, brControl) {
+        // xOffset = 10;
+        // yOffset = 10;
+
+        y = rdim[1] + yOffset;
+        for (i = 0; i < iR; i++) {
+            obj = data[i];
+            // all  items coming here
+            //  console.log(obj);
+            x = rdim[0] + xOffset;
+
+
+            var item_count = 0;// custom  variable by amarkant 
+
+            for (var key in obj) {
+
+                if (key.charAt(0) !== '$') {
+                    if (obj[key] !== null) {
+                        cell = obj[key].toString();
+                    } else {
+                        cell = '-';
+                    }
+                    cell = cell + '';
+
+                    //alert(cell);
+                    if (((cell.length * fontSize) + xOffset) > (width)) {
+                        iTexts = cell.length * fontSize;
+                        start = 0;
+                        end = 0;
+                        ih = 0;
+                        if ((brControl) && (i === 0)) {
+                            this.setFont(this.getFont().fontName, "bold");
+                        }
+
+
+                        if (item_count === 0) {
+                            // for serial number 
+                            // x = position to X co-ordinate 
+                            // y = position to Y co-ordinate 
+                            if (cell === "S.No.") {
+                                this.text(x - 2, y + ih, cell);
+                            } else {
+                                this.text(x - 5, y + ih, cell);
+                            }
+                            ih += fontSize;//- 5;
+                        }
+
+                        else if (item_count === 1) {
+                            // for Item 
+                            if (cell === "Item") {
+                                this.setFontSize(10);
+                                this.setFont("helvetica", "bold");
+                                this.text(x - 15, y + ih, cell);
+                            } else {
+
+                                var line = this.setFont("times", "normal").setFontSize(9.5).splitTextToSize(cell.trim(), 32);
+                                this.text(x - 22, y + ih, line);
+                            }
+                            // this.text(x - 18, y + ih, cell);
+                            ih += fontSize - 5;
+                        }
+                        else if (item_count === 2) {
+                            // for vendor description 
+                            if (cell === "no vendor description found") {
+                                ih += fontSize - 5;
+                            } else {
+
+                                if (cell === "Description") {
+                                    this.setFontSize(10);
+                                    this.setFont("helvetica", "bold");
+                                    this.text(x, y + ih, cell);
+                                } else {
+                                    var line = this.setFont("times", "normal").setFontSize(9.5).splitTextToSize(cell, 75);
+                                    this.text(x - 20, y + ih, line);
+                                }
+                                //this.text(x - 30, y + ih, cell);
+                                ih += fontSize - 5;
+                            }
+                        }
+                        else if (item_count === 3) {
+                            // for quantity
+                            if (cell === "Quantity") {
+                                // label (heading)  
+                                this.text(x + 24, y + ih, cell);
+                            } else {
+                                // price or amount value coming here
+                                this.text(x + 10, y + ih, cell);
+                            }
+                            ih += fontSize - 5;
+                        } else {
+                            // for price
+                            if (cell === "Price") {
+                                this.text(x + 13, y + ih, cell);
+                            }
+                            ih += fontSize - 5;
+                        }
+                        item_count++;
+                    } else {
+                        if ((brControl) && (i === 0)) {
+                            this.setFont("times", "bold");
+                        }
+                        // it is also for quantity
+
+                        this.text(x + 30, y, cell);
+                        // console.log(cell);
+                    }
+                    x += rdim[2] / jC;
+                }// if close
+            }// for close
+
+            this.setFont("times", "normal");
+            y += heights[i];
+        }
+        return y;
+    };
+
+//calculate no.of based on the data array
+
+    API.vendorPaymentChallanCalColumnCount = function(data) {
+        var obj = data[0];
+
+        var i = 0;
+        for (var key in obj) {
+            if (key.charAt(0) !== '$') {
+                ++i;
+            }
+        }
+        return i;
+    };
+
+//draws columns based on the caluclated dimensions
+
+    API.drawPaymentVendorChallanColumns = function(i, rdim) {
+        x = rdim[0]; // x- axis
+        y = rdim[1]; // y- axis
+        w = rdim[2] / i; // 
+        h = rdim[3];
+
+        var diff = 11;
+        for (var j = 0; j < i; j++) {
+            // edited to fix column width here based on pixel 
+            if (j === 0) {
+                // for S.No.
+                var item = 20;
+                this.rect(x, y, w - item, h);
+                x += w;
+                x -= item;
+            }
+            else if (j === 1) {
+                // for item 
+
+                this.rect(x, y, w, h);
+                x += w;
+
+            } else if (j === 2) {
+                // for vendor description 
+                var item = 45;
+                this.rect(x, y, w + item, h);
+                x += w;
+                x += item;
+            } else if (j === 3) {
+                //  quantity
+                var item = 14;
+                this.rect(x, y, w - item, h);
+                x += w;
+                x -= item;
+            } else {
+                // for price 
+                this.rect(x, y, w - diff, h);
+                x += w;
+
+            }
+        }
+    };
+
+//calculates dimensions based on the data array and returns y position for further editing of document 
+
+
+
+// column row dimension 
+    API.vendorPaymentChallanColumnRowDimension = function(data, rdim) {
+        row = 0;
+        x = rdim[0];
+
+        y = rdim[1];
+        lengths = [];
+        for (var i = 0; i < data.length; i++) {
+            obj = data[i];
+            // console.log(obj);
+            length = 0;
+            for (var key in obj) {
+                if (obj[key] !== null) {
+
+                    if (length < obj[key].length) {
+                        var maxLength = 10; // added by amarkant
+                        if (obj[key].length > maxLength) {
+                            lengths[row] = maxLength - 15; // all row
+                        } else {
+                            lengths[row] = obj[key].length;
+                        }
+                        //   lengths[row] = obj[key].length;
+                        length = lengths[row]; //   here handle only data row
+                    }
+                }
+            }
+            ++row;
+        }
+        heights = [];
+        for (var i = 0; i < lengths.length; i++) {
+            if ((lengths[i] * (fontSize)) > width) {
+                nlines = Math.ceil((lengths[i] * (fontSize)) / width);
+
+                // edited by amarkant 
+                if (i === 0) {
+                    // height of vendor table header , if you want to increase or decrease 
+                    // alter here .
+                    heights[i] = (nlines) * (fontSize / 2) + fontSize - 16; // row height 
+                } else {
+                    // height for data part of table 
+                    heights[i] = (nlines) * (fontSize / 2) + fontSize + 1.25; // row height manipulation here
+                }
+                ///////////
+
+                //heights[i] = (nlines) * (fontSize / 2) + fontSize;
+            } else {
+                heights[i] = (fontSize + (fontSize / 2)) + 8; // added  when i add Rs. to text 
+            }
+        }
+
+        value = 0;
+        indexHelper = 0;
+        SplitIndex = [];
+        for (var i = 0; i < heights.length; i++) {
+            value += heights[i];
+            indexHelper += heights[i];
+            if (indexHelper > (this.internal.pageSize.height - pageStart - 30)) {
+                SplitIndex.push(i);
+                indexHelper = 0;
+                pageStart = rdim[4] + 30;
+            }
+        }
+        // console.log(value); 
+        //  value is row height 
+        return value;
+    };
+
+//draw rows based on the length of data array
+
+    API.drawVendorPaymentChallanRows = function(i, rdim, hrControl) {
+        x = rdim[0];
+        y = rdim[1];
+        w = rdim[2];
+        h = rdim[3] / i;
+        for (var j = 0; j < i; j++) {
+            if (j === 0 && hrControl) {
+                this.setFillColor(182, 192, 192);//colour combination for table header
+                this.rect(x, y, w, heights[j], 'F');
+                this.setFontSize(10);
+                this.setFont("helvetica", "bold");
+                this.setFontSize(10);
+            } else {
+                this.setFontSize(10);
+                this.setFont("helvetica", "bold");
+                this.setDrawColor(0, 0, 0);//colour combination for table borders you
+                this.rect(x, y, w, heights[j]);
+            }
+            y += heights[j];
+        }
+    };
+}(jsPDF.API));
+
+
+
+
+
+function printPaymentChallanOnPDF(order_id) {
+   // alert(order_id);
+
+    $.ajax({
+        type: "POST",
+        url: 'printapi/vendor_payment_challan.php',
+        data: "action=order_to_price_challan&order_id=" + order_id,
+        success: function(response) {
+            console.log(response);
+            var jsonData = $.parseJSON(response);
+            var goodsData = [];
+
+            if (jsonData['shipping_add']) {
+                ship_address = jsonData['shipping_add'].toString();
+            } else {
+                ship_address = " ";
+            }
+
+            if (jsonData['billing_add']) {
+                bill_address = jsonData['billing_add'].toString();
+            } else {
+                bill_address = " ";
+            }
+
+            if (jsonData['billing_phone']) {
+                bphone = jsonData['billing_phone'].toString();
+            } else {
+                bphone = " ";
+            }
+
+            if (jsonData['shipping_phone']) {
+                sphone = jsonData['shipping_phone'].toString();
+            } else {
+                sphone = " ";
+            }
+
+            if (jsonData['date_of_delivery']) {
+                dod = jsonData['date_of_delivery'].toString();
+            } else {
+                dod = " ";
+            }
+
+            if (jsonData['delivery_type']) {
+                dtype = jsonData['delivery_type'].toString();
+            } else {
+                dtype = " ";
+            }
+
+            if (jsonData['special_instruction']) {
+                cs_instruct = jsonData['special_instruction'].toString();
+            } else {
+                cs_instruct = " ";
+            }
+
+            if (jsonData['loggedinuser']) {
+                logged_inuser = jsonData['loggedinuser'];
+            } else {
+                logged_inuser = " ";
+            }
+            products = jsonData['product'];
+            subtotal = jsonData['subtotal_amount'];
+            barcode_image = jsonData['barcode_image'];
+            barcode_height = jsonData['barcode_height'];
+            barcode_width = jsonData['barcode_width'];
+            
+            for (var i = 0; i < products.length; i++) {
+                if (products[i].vendor_description)
+                {
+                    goodsData.push({
+                        //DONT ALTER OR REMOVE SPACE I AM USING PIXEL CALCULATION.
+                        "S.No.": "      " + products[i].serial_no,
+                        "Item": products[i].name,
+                        "Description": products[i].vendor_description,
+                        "Quantity": products[i].order_quantity,
+                        "Price": "Rs. "+products[i].price
+                    });
+                } else {
+                    goodsData.push({
+                        // DONT ALTER OR REMOVE SPACE I AM USING PIXEL CALCULATION.
+                        "S.No.": "      " + products[i].serial_no,
+                        "Item": products[i].name,
+                        // DONT ALTER OR REMOVE SPACE I AM USING PIXEL CALCULATION.
+                        "Description": '                        ',
+                        "Quantity": products[i].order_quantity,
+                        "Price": "Rs.  "+products[i].price
+                    });
+                }
+            }
+            generatePDF_payment_challan(barcode_height,barcode_width,barcode_image,logged_inuser, order_id, ship_address, bill_address, bphone, sphone, dod, dtype, cs_instruct, goodsData, subtotal);
+        },
+        error: function(response) {
+            console.log(response);
+        }
+    });
+}
+
+
+
+function generatePDF_payment_challan(barcode_height,barcode_width,barcode_image,logged_inuser, order_id, ship_address, bill_address, bphone, sphone, dod, dtype, cs_instruct, goodsData, subtotal) {
+    var pdfdoc = new jsPDF('p', 'mm', 'a4', true);
+    var pdfMinX = 15, pdfMinY = 20, pdfMaxX = 180, pdfMaxY = 264;
+    var titleMaxHeight = 35, headerFont = 24, subHeaderFont = 16, pdfFont = 10, setLinewidth = 0.1;
+    var line;
+
+    pdfdoc.setProperties({
+        title: 'Order Payment Challan',
+        subject: 'PDF to generate Order Delivery Payment Challan ',
+        author: 'Flaberry Service Pvt. Ltd.',
+        keywords: 'generated, javascript, web 2.0, ajax',
+        creator: 'MEEE'
+    });
+
+    pdfdoc.addImage(barcode_image, 'JPEG', 135, 22, barcode_width, barcode_height);
+
+    pdfdoc.rect(pdfMinX, pdfMinY, pdfMaxX, pdfMaxY); // outer border create a rectangle square 
+    pdfdoc.setFontSize(headerFont);
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.textAlignCenter("flaberry.com", {align: "center"}, 2, 15);
+    pdfdoc.setFontSize(subHeaderFont);
+    pdfdoc.setFont("times", "bold");
+    
+    pdfdoc.text(pdfMinX + 5, titleMaxHeight - 8, "DELIVERY CHALLAN");
+    
+    //pdfdoc.textAlignCenter("DELIVERY CHALLAN", {align: "center"}, 5, titleMaxHeight - 8);
+    pdfdoc.setFontSize(pdfFont);
+    pdfdoc.setFont("helvetica");
+    pdfdoc.text(pdfMinX + 5, titleMaxHeight - 3, 'Flaberry.com');
+    
+   // pdfdoc.text((6 * pdfMinX) + 2, titleMaxHeight - 3, 'Flaberry.com');
+    pdfdoc.line(pdfMinX, titleMaxHeight, pdfMinX + pdfMaxX, titleMaxHeight);// x1,y1,x2,y2
+    pdfdoc.setLineWidth(setLinewidth);
+
+    // for recipient address
+    var MidDiv = (pdfMinX + pdfMaxX) / 2;
+    var addressHorizontalLineHeight = (2 * titleMaxHeight) + pdfMinX;
+    // --------------->>>>>>>>>>>>>line
+    pdfdoc.line(pdfMinX, addressHorizontalLineHeight - 8, pdfMinX + pdfMaxX, addressHorizontalLineHeight - 8);// x1,y1,x2,y2
+    ////// ^^^^^^^^^^
+    pdfdoc.line(MidDiv + 5, titleMaxHeight, MidDiv + 5, ((2 * titleMaxHeight) + pdfMinX) - 8); // vertical line 
+    pdfdoc.text(pdfMinX + 5, titleMaxHeight + 10, 'Billing Address : ');
+
+    line = pdfdoc.setFont("helvetica", "normal").setFontSize(pdfFont).splitTextToSize(bill_address, 70);
+    pdfdoc.text(pdfMinX + 5, titleMaxHeight + 15, line);
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.text(pdfMinX + 5, titleMaxHeight + 38, 'Contact Number : ');
+    pdfdoc.setFont("helvetica", "normal");
+    pdfdoc.text((4 * pdfMinX) - 8, titleMaxHeight + 38, bphone);
+    pdfdoc.setFont("helvetica", "bold");
+
+    pdfdoc.text(MidDiv + 10, titleMaxHeight + 5, 'Order No: ' + order_id);
+    pdfdoc.text(MidDiv + 10, titleMaxHeight + 10, 'Shipping Address :');
+    line = pdfdoc.setFont("helvetica", "normal").setFontSize(pdfFont).splitTextToSize(ship_address, 85);
+    pdfdoc.text(MidDiv + 10, titleMaxHeight + 15, line);
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.text(MidDiv + 10, titleMaxHeight + 38, 'Contact Number : ');
+    pdfdoc.setFont("helvetica", "normal");
+    pdfdoc.text(MidDiv + 43, titleMaxHeight + 38, sphone );
+
+    ///////////////////////////
+    var receiverHorizontalLineHeight = (2 * addressHorizontalLineHeight) - 25;//125
+    ////////////^^^^^^^^^^^^^^line
+    pdfdoc.line(MidDiv + 5, ((2 * titleMaxHeight) - 8 + pdfMinX), MidDiv + 5, receiverHorizontalLineHeight - 20); // vertical line 
+    pdfdoc.line(pdfMinX, receiverHorizontalLineHeight - 20, pdfMinX + pdfMaxX, receiverHorizontalLineHeight - 20);// x1,y1,x2,y2
+    pdfdoc.setLineWidth(setLinewidth);
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.text(pdfMinX + 5, addressHorizontalLineHeight - 2, 'Receiver\'s Name :            ');
+    pdfdoc.line(pdfMinX + 5, addressHorizontalLineHeight + 7, MidDiv, addressHorizontalLineHeight + 7);
+    pdfdoc.text(pdfMinX + 5, addressHorizontalLineHeight + 12, 'Relation with recipient :  ');
+    pdfdoc.line(pdfMinX + 5, addressHorizontalLineHeight + 20, MidDiv, addressHorizontalLineHeight + 20);
+    pdfdoc.text(pdfMinX + 5, addressHorizontalLineHeight + 25, 'Phone/Mobile no :          ');
+    pdfdoc.line(pdfMinX + 5, addressHorizontalLineHeight + 35, MidDiv, addressHorizontalLineHeight + 35);
+    pdfdoc.text(MidDiv + 10, addressHorizontalLineHeight, 'Date                            :  ' + dod);
+    pdfdoc.text(MidDiv + 10, addressHorizontalLineHeight + 8, 'Special instruction    : ');
+
+    line = pdfdoc.setFont("helvetica", "normal").setFontSize(pdfFont).splitTextToSize(cs_instruct, 80);
+    pdfdoc.text(MidDiv + 10, addressHorizontalLineHeight + 14, line);
+
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.text(MidDiv + 10, addressHorizontalLineHeight + 35, 'Delivery Type             : ' + dtype);
+
+    // goods
+    var descYaxis = 135;
+    var descXaxis = 100;
+    pdfdoc.textAlignCenter("DESCRIPTION OF GOODS", {align: "center"}, descXaxis, descYaxis);
+    var height = descYaxis + 13;
+    // to generate vendor data table 
+    height = pdfdoc.drawVendorPaymentChallanTable(goodsData, {
+        xstart: pdfMinX + 1, // margin from left side
+        ystart: 0, // 
+        tablestart: height - 10, // position from top to 
+        marginright: pdfMinX - 19, // table right margin
+        xOffset: 5, //
+        yOffset: 5 // an offset of tbale cell avlue
+    });
+
+
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.text(153, height + 1, "Sub Total :  " + "Rs. " +subtotal);
+
+    // to fix at a perticular height = 241
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.line(pdfMinX, 247, pdfMinX + pdfMaxX, 247);
+    pdfdoc.textAlignCenter("Feedback from Customer (Mandatory)", {align: "center"}, 100, 252);
+
+    // bottom part data items....
+    var height = 265;
+    pdfdoc.setFontSize(pdfFont);
+    pdfdoc.line(pdfMinX, height, pdfMinX + pdfMaxX, height);// x1,y1,x2,y2
+
+    pdfdoc.setFont("helvetica", "bolditalic");
+    height += 3;
+    pdfdoc.text(pdfMinX + 1, height + 1, 'This is certify that all the above above-mentained materials have been received in good condition.');
+
+    // for name & signature of receiver | company seals
+    pdfdoc.setFontSize(pdfFont);
+    height += 10;
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.text(150, height - 1, 'Authorised Signatory');
+    pdfdoc.setFont("helvetica", "normal");
+    pdfdoc.text(155, height + 3.5, logged_inuser);
+    pdfdoc.setFont("helvetica", "bold");
+    pdfdoc.text(pdfMinX + 1, height - 1, 'Name & Signature of Receiver');
+    // for customer support
+    pdfdoc.setFontSize(subHeaderFont);
+    pdfdoc.setFont("times", "bold");
+    pdfdoc.textAlignCenter("CUSTOMER SUPPORT +91-8010760760", {align: "center"}, 100, height + 13);
+
+    pdfdoc.autoPrint("payment_challan");
+    pdfdoc.output("dataurlnewwindow");
+}
+
+  

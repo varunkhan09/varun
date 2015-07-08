@@ -1,0 +1,49 @@
+
+
+
+<div ng-controller="odoMeterController">
+    
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" ng-checked="allchkboxVal" ng-model="allchkbox" ng-change="check_uncheck_all()"/></th>
+                    <th>Date</th>
+                    <th>Vehicle</th>
+                    <th>Odometer Value</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            
+            <tr ng-show='add_new_odometer_table_row'>
+                <td ng-hide="true"><input type="text" ng-model="vid"> </td>
+                <td><input type="checkbox" ng-model='ncheckbox'/></td>
+                <td><input type="text" ng-model="ndate" date-picker /></td>
+                <td>
+                    <input type="text" ng-hide="true" ng-model='nvid'>
+                  <input type="text" ng-model="vehicle" typeahead-on-select="setVehicle($item)" typeahead="item.model_brand as (item.model_brand+' / '+item.model_name+' / '+item.licence_plate) for item in vehicles | filter:$viewValue | limitTo:10">
+                </td>
+                <td><input type="text" ng-model="nodometervalue"></td>
+                <td><input type="text" ng-model="nunit"></td>
+            </tr>
+            
+            <tr ng-repeat='odometer in odometerRecord'>
+                <td> <input type="checkbox" ng-model='odometer.checkbox'/> </td>
+                <td> {{odometer.date}}</td>
+                <td> {{odometer.model_brand+'/'+odometer.model_name+'/'+odometer.licence_plate}} </td>
+                <td> {{odometer.odometervalue}}</td>
+                <td> {{odometer.unit}}</td>
+             </tr>
+        </table>
+    </div>
+    
+    <div ng-show='create_odometer_entry_div' class="action-pane">
+          <button ng-click="create_odometer_entry()">Create</button>
+    </div>
+    
+    <div ng-show='save_cancel_div_toggle' class="action-pane">
+         <button type="button" ng-click="add_odometer_entry(vid,nvid,ncheckbox,ndate,nodometervalue,nunit)">Save</button>
+        or <button type="button" ng-click="cancel_odometer_entry()">Cancel</button> 
+    </div>
+    
+</div>

@@ -1,0 +1,42 @@
+
+
+<div class="container-fluid" ng-controller="vehiclesListCtrl">
+    <div class="panel panel-info">
+        <div style="background:#009ACD; color:#fff;" class="panel-heading text-capitalize">
+            <h3 class="panel-title">Vehicle List</h3>
+        </div>
+        
+        <div class="panel-body">
+            <div ng-repeat="vitem in vehiclesList">
+                <div id="{{vitem.vid}}">
+                    <div class="col-xs-6 col-sm-4" style="margin-bottom: 10px;">
+                        <div class="vehicles_details">
+                            <div>
+                                <a href="" data-type="open"> <img style="height: 70px; width: 70px;" src="images/{{vitem.model_brand| lowercase}}.png" class="img-thumbnail"></a>
+                            </div>
+
+                            <div class="vehicles_partner_details">
+                                
+                                <h4 class="vehicles_partner_heading">
+                                    <a data-type="open" href="#/vehicle/edit/{{vitem.vid}}">{{vitem.model_brand + '/' + vitem.model_name}} </a>
+                                </h4>
+                                
+                                <div style="padding:5px 0 5px 0">
+                                    <span>{{getDriver(vitem.driver_id)}} - </span>
+                                    <span>{{vitem.driver_location}}</span>
+                                </div>
+
+                                <div>
+                                    <span class="belongs_to_tag">{{vitem.tags}}</span>
+                                </div>   
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

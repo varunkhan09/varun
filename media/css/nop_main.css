@@ -1,0 +1,77 @@
+.hoverable:hover
+{
+	background-color:#D3D3D3;
+}
+
+body
+{
+	font-size:16px;
+	font-family: Open Sans;
+}
+
+.thisbuttonfont
+{
+	font-size:13px;
+	font-family: Open Sans;
+}
+
+.thistd
+{
+	border-bottom:2px solid #D3D3D3;
+}
+
+.buttons
+{
+	margin-left: 2%; border-radius: 6px; background-color: #00688B; color: white; font-weight:bold; height:30px; border:0; font-family: 'Raleway'; font-size:15px;
+}
+.buttons:hover
+{
+	background-color: #4A708B; cursor:pointer;
+}
+
+.bootstrap-tagsinput
+{
+	width: 100% !important;
+	height: 100px !important;
+}
+
+.tag
+{
+	font-size:17px;
+	background-color:rgba(91,192,222,0.8);
+	line-height: 2;
+}
+
+.bootstrap-tagsinput input 
+{
+	font-size:17px;
+	border:1px;
+	width:150px !important;
+}
+
+.tt-dropdown-menu
+{
+	width:200px;
+}
+
+.tt-query
+{
+	width:100% !important;
+}
+
+.product_items_data_class
+{
+	display:block;
+	width:100%;
+}
+
+.product_selector_row_class
+{
+	height:40px;
+	border-bottom:2px solid #D3D3D3;
+}
+
+.product_row_class
+{
+	display:none;
+}

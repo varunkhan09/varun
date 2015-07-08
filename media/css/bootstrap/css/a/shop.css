@@ -1,0 +1,127 @@
+/*!
+ * Start Bootstrap - Shop Homepage HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+
+@import url(http://fonts.googleapis.com/css?family=Roboto);
+body{
+    // font-family: Roboto,'Open Sans', sans-serif;
+}
+
+.slide-image { width: 100%; }
+.panel-body{
+    background:#DCDCDC;
+}
+
+.carousel-holder {
+    margin-bottom: 30px;
+}
+
+.carousel-control,.item {
+    border-radius: 4px;
+}
+
+.caption {
+    height: 100px;
+    overflow: hidden;
+}
+
+.caption h4 {
+    white-space: nowrap;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.ratings {
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #d17581;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
+
+footer {
+    margin: 50px 0;
+}
+
+.action-plate{
+    margin: 5% 0 5% 0;
+}
+
+.sticky-nav-bar{
+    border-color: #858D93;
+    margin-top: -20px;
+    text-align: center;
+    background: #858D93;
+    padding-top: 5px;
+    padding-bottom: 5px;
+   
+}
+.sticky-nav-bar a{
+     color:#fff;
+     font-weight: bold;
+     padding: 2.5%;
+     text-decoration: none;
+}
+
+.sticky-nav-bar a:hover{
+}
+
+.caption > h3 > a{
+     color: #fff;
+    text-decoration: none;
+}
+.thumbnail > .caption {
+    background: #009ACD;//#858D93;
+}
+
+.tmp-download > center{
+    font-weight: bold;
+}
+.tmp-download > center > a{
+    text-decoration: none;
+}
+.headingname{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.panel-default>.panel-heading{
+    background: #009ACD;
+    color: #fff;
+    border-radius: 0px;
+}
+table thead tr th{
+    color: #009ACD;
+}
+
+
+
+.ui-dialog-titlebar.ui-widget-header.ui-corner-all.ui-helper-clearfix.ui-draggable-handle{
+        background: #009ACD;
+        font-size: 14px;
+        color: #FFF;
+        font-family: Open Sans;
+
+    }
+    div#dialog-confirm{
+        color: #333;
+        font-size: 13px;
+        font-family: Open Sans;
+    }
+    .ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix {
+        padding: 1px;
+        font-size: 12px;
+        font-family: Open Sans;
+    }

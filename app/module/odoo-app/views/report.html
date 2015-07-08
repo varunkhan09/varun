@@ -1,0 +1,86 @@
+<style type="text/css">
+
+.panel-primary>.panel-heading {
+    color: #fff;
+    background-color: #009ACD;
+    border-color: #009ACD;
+    border-radius: 0px;
+}
+.panel-primary>.panel-body {
+    background-color: #DCDCDC;
+}
+
+</style>
+
+
+
+<div style="min-height: 600px;" class="filter" ng-controller="ReportCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">{{pageTitle}} Filter Options </div>
+        
+        <form name="report_filter_form" ng-submit="submitToGenerateReport('get_by')">
+            <div class="panel-body">
+                <div style=" width:33%;float: left;display: inline-block;">
+                    <label>Date Reported</label><br>
+                    From <input required type="text" ng-model="Report.fromDate" idate-picker class="cust-cal" placeholder="Select date"/>
+                    To <input required type="text" ng-model="Report.toDate" idate-picker class="cust-cal" placeholder="Select date"/>
+                </div>
+
+                <div style="width:30%;float: left;display: inline-block; ">
+                    <label>Driver </label><br>
+                    <input  type="text" 
+                           typeahead-on-select="set_driver($item)" 
+                           ng-model="Report.driver" 
+                           typeahead="item.name for item in Report.drivers | filter:$viewValue | limitTo:10" 
+                           class="form-control" placeholder="Select driver">
+                    
+                </div>
+                <div style="width:30%;float: right;display: inline-block;">
+                    <label>Vehicle </label><br>
+                    <input type="text" ng-model="Report.vehicle" 
+                           typeahead-on-select="set_vehicle($item)" 
+                           ng-model="Report.vehicle" 
+                           typeahead="item.model_brand as (item.model_brand+' / '+item.model_name+' / '+ item.licence_plate) for item in Report.vehicles | filter:$viewValue | limitTo:10" 
+                           class="form-control" placeholder="Select vehicle">
+                </div>
+            </div>
+
+            <div class="panel-footer clearfix">
+               
+                <strong style="color: red;">Note: </strong>To generate all drivers report only select date range.
+               
+                <div class="pull-right">
+
+                    <button title="To Get All Drivers Report Only Select Date Range" type="button" ng-click="get_all_drivers_report('get_all')" class="btn btn-warning"><span class="glyphicon glyphicon-download"></span> All Drivers Report
+                    </button>
+                
+                <button type="submit" ng-disabled="report_filter_form.$invalid" class="btn btn-primary"><span class="glyphicon glyphicon-time"></span> Report</button>
+
+                <button type="button" ng-click="refresh()" class="btn btn-default"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Clear</button>
+                
+                </div>
+            </div>
+        </form>
+    </div> 
+    
+    
+    <!--- Child Controller --->
+    <!-- include report template -->
+    
+    <div ng-if="get_by">
+        <div class="report-views" ng-controller="ReportViewCtrl">
+        <div ng-if="cReport.status" ng-include='cReportTemplates.url'>     
+        </div>  
+    </div>
+    </div>
+    
+    <div ng-if="get_all">
+         <div class="report-views" ng-controller="AllDriversReportViewCtrl">
+        <div ng-if="aReport.status" ng-include='cReportTemplates.url'>     
+        </div>  
+    </div>
+    </div>
+    
+    
+</div>
+

@@ -1,0 +1,49 @@
+
+
+<div class="container-fluid">
+
+    <!-- Single button -->
+    <div style="float: right;display: inline-block;margin-top: 5px;" class="btn-group" ng-show="more_action_active">
+        <button type="button" class="btn btn-primary custom-btn dropdown-toggle" data-toggle="dropdown">
+            More <span class="caret"></span>
+        </button>
+        <ul class="custom-dropdown dropdown-menu" role="menu">
+            <li><a href="#">Share</a></li>
+            <li><a href="#">Embed</a></li>
+            <li><a href="#">Export</a></li>
+            <li><a href="#">Delete</a></li>
+        </ul>
+    </div>
+
+
+    <table  style="background:#fff;margin-left:0%;width:100%;text-align:left;" class="table table-responsive">
+        <thead>
+            <tr>
+                <th> 
+                    <input type="checkbox" ng-checked="allCheckedVal" ng-model="allChecked" ng-change="checkUncheckAll()" />
+                </th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--| filter:{ selected : true} -->
+
+
+            <tr ng-repeat="vstatus in vehicles_status">
+                <td>
+                    <!--    <input type="checkbox" ng-model="selection.resultset[vstatus.sid][vstatus.name]" name="group" id="{{vstatus.sid}}" />-->
+                    <input type="checkbox" ng-model="vstatus.checked" ng-change="checkUncheck(vstatus)" name="group" id="{{vstatus.sid}}" />
+                </td>
+                <td>{{vstatus.name}}</td>
+                 <td>
+                    <button ng-click="editVehiclesStatus(vstatus)">Edit</button>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+ <pre> {{selectedvstate|json}}</pre>
+ 
+</div>
+

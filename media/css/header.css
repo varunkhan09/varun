@@ -1,0 +1,277 @@
+/* CSS FOR INDEX */
+
+.blue_links{ text-decoration:none; color:white; }
+.subhhead{ color:#009ACD; }
+.blue_links:hover{ text-decoration:none; color:#00688B;}
+.container-fluid{ padding:0 1px; }
+.order_status_links{ padding:0px; border-right:2px #00B2EE solid;}
+.content_main_division{ margin-top:10px; padding:0px;}
+.navigation_links{ font-size:17px; }
+.panels_main_div{ margin:50px 0 0 0; padding-left:0 30px 0 30px; }
+.panel_image{ height:80px; width:80px; }
+.each_panel_image_div{ display:block; margin-top:15px; margin-bottom:5px; }
+.each_lanel_label_div{ font-size:16px; color:#009ACD; }
+.each_panel_div{ margin-top:50px; }
+
+.each_panel_div:hover {
+	cursor:pointer;
+	/*-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;*/
+	-webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.67);
+	-moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.67);
+	box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.67);
+}
+
+
+
+/* CSS FOR HEADER */
+.header_li{	
+	padding-top:10px;
+}
+
+.header_main_container{
+	position:fixed;
+	width:100%;
+	z-index:999;
+	top:0px;
+	background-color:#009ACD;;
+	margin-bottom:20px;
+}
+
+.header_main_container2
+{
+	position:fixed;
+	z-index:990;
+	top:95px;
+	width:100%;
+}
+
+.header_link_icons{
+	margin-right:10px;
+}
+
+.header_flaberry_icon_li{
+	background-color:white;
+}
+
+.dashboard_div{
+	border-bottom:1px solid #009ACD;
+}
+/* CSS FOR HEADER  END*/
+
+
+/* CSS FOR CURRENT STOCK */
+.heading1_label{
+	font-size:22px;
+	color:white;
+}
+
+.flower_name_div{
+	margin-top:10px;
+	vertical-align:middle;
+	border-top:2px solid #00B2EE;
+	border-bottom:2px solid #00B2EE;
+}
+
+.heading2_label{
+	font-size:18px; color:#00688B; margin:0px;
+}
+
+.data_labels_bold{
+	font-family: 'Raleway', sans-serif; font-weight:bold;
+}
+
+.data_labels_normal{
+	font-family: 'Raleway', sans-serif;
+}
+
+.each_flower{
+	margin-top:100px;
+}
+
+.first_flower{
+	margin-top:50px;
+}
+
+.current_stock_heading_division{
+	background-color:#009ACD;
+	color:white;
+}
+
+/* CSS FOR CURRENT STOCK END */
+
+
+
+
+
+.date_textbox{
+	/*
+	margin-left: 2%;
+	border-radius: 6px;
+	font-weight:bold;
+	height:30px;  
+	font-family: 'Raleway';
+	*/
+}
+.calender_icon{
+	margin-left:10px;
+	vertical-align: middle;
+	font-size:28px;
+}
+
+.content_table_division{
+	margin-top:40px;
+	padding:0px;
+}
+
+.table_heading_row{
+	font-size:20px;
+	color:white;
+	background-color:#009ACD;
+	padding:90px;
+	font-family: Open Sans;
+	height:56px;
+}
+
+.table_data_row{
+	background-color:#DCDCDC;
+	font-family: 'Raleway', sans-serif;
+	height:100px;
+}
+
+.table_data_row:hover{ background-color:#D3D3D3;}
+
+.buttons{
+	margin-left: 2%; 
+	border-radius: 6px; 
+	background-color: #00688B; 
+	color: white; 
+	font-weight:bold; 
+	height:30px; 
+	border:0; 
+	font-family: 'Raleway';
+}
+.buttons:hover { background-color: #4A708B; cursor:pointer; }
+
+.add_stock_product_type_textbox{ width:100%; }
+
+/* CSS FOR WASTAGE STOCK */
+.wastage_content_main_division{ padding:0px; }
+.wastage_stock_product_type_textbox{ width:100%; }
+
+
+/******************************/
+/** DROP DOWN CSS STYLE SHEET */
+/******************************/
+
+
+
+/* Main Navigation */ 
+/*#nav { position:relative;} 
+*/
+	ul#navigation li { 
+		display:inline; 
+		font-size:13px; 
+		font-weight:bold; 
+		/*margin:0; padding:0; float:left; 
+		position:relative; 
+		*/
+	} 
+
+		ul#navigation li a { 
+			color:#fff;
+			text-decoration:none; 
+			border-color: #009ACD;
+			display:inline-block; 
+			border-right:1px solid #fff; 
+			background: #009ACD;
+			 -webkit-transition:color 0.3s linear, background 0.1s linear; 
+			 -moz-transition:color 0.3s linear, background 0.1s linear; 
+			 -o-transition:color 0.3s linear, background 0.1s linear; 
+			 transition:color 0.3s linear, background 0.1s linear; 
+			}
+
+			ul#navigation li a:hover { 
+			  /*	background:#f8f8f8; */
+			  	color:#009ACD; 
+			}
+
+			ul#navigation li a.first { 
+				border-left: 0 none; 
+			} 
+
+			ul#navigation li a.last { 
+				border-right: 0 none; 
+			} 
+
+			ul#navigation li:hover > a { 
+				background:#fff; 
+				color:#009ACD; 
+			}
+
+
+
+/* Drop-Down Navigation */
+
+
+ul#navigation li:hover > ul
+{
+/*these 2 styles are very important, 
+being the ones which make the drop-down just to appear on hover */
+    visibility:visible;
+   opacity:1;
+}
+ 
+ul#navigation ul, ul#navigation ul li ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;    
+/*the next 2 styles are very critical and important, 
+being the ones which make the drop-down to stay hidden */
+    visibility:hidden;
+    opacity:1;
+    position: absolute;
+    z-index: 99999;
+    background:#f8f8f8;
+     box-shadow:2px 1px 10px #ccc;
+/* css3 transitions displaying for smooth hover effect */
+    -webkit-transition:opacity 0.1s linear, visibility 0.1s linear; 
+    -moz-transition:opacity 0.1s linear, visibility 0.1s linear; 
+    -o-transition:opacity 0.1s linear, visibility 0.1s linear; 
+    transition:opacity 0.1s linear, visibility 0.1s linear;     
+}
+ 
+ul#navigation ul {
+    top: 65px;
+    left: 1px;
+}
+ 
+ul#navigation ul li ul {
+    top: 0;
+    left: 181px; /* strong related to width:180px; from above */
+}
+ 
+ul#navigation ul li a {
+    background:none;
+    padding:7px 5px;
+    color:#616161;
+   	text-decoration:none;
+    display:inline-block;
+    border:0 none;
+    float:left;
+    clear:both;
+    width:180px;
+
+}
+
+ul#navigation ul li a:hover{
+	border-left: 3px solid #009ACD;
+}
+
+/*ul#navigation ul li {
+    clear:both;
+    width:100%;
+    border:0 none;
+    border-bottom:1px solid #c9c9c9;
+}*/

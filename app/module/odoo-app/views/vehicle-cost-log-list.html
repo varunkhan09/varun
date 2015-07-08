@@ -1,0 +1,53 @@
+
+<accordion close-others="showList">
+    <accordion-group heading="{{vehicleData.title}} ({{vehicleData.record.length ? vehicleData.record.length : 0 }})" ng-repeat="vehicleData in dataByVehicles">
+        {{vehicleData.content}}
+
+        <table  style="background:#fff;margin-left:0%;width:100%;text-align:left; font-size:14px;" class="table table-hover table-responsive tfont-size">
+            <thead>
+                <th>#</th>
+                <th>Vehicle</th>
+                <th>Type</th>
+                <th>Cost</th>
+                <th>Date</th> 
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="record in vehicleData.record">
+                    <td>{{$index + 1}}</td>
+                    <td>{{vehicleData.title}}</td>
+                    <td>{{record.type}}</td>
+                    
+                    <td>{{record.cost| currency:"&#8377;" }}</td>
+                     <td>{{record.date}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td><strong>Total</strong></td>
+                    <td><strong>{{ vehicleData.totalCostOfEachRecord | currency:"&#8377;" }}</strong></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </accordion-group>
+</accordion>
+
+
+<div class="action-pane">
+     <div style="display: inline-block;float: left;">
+            <h3 style="margin-left: 10px;margin-top: 10px;">Vehicle's Cost Logs</h3>
+     </div>
+    
+     <div style="display: inline-block;float: right;padding-right:10px; ">
+         <button style="margin-left: 10px;margin-top: 10px;" class="btn btn-default" ng-click="create_vcost_log('/vehicles-cost-logs')"><span class="glyphicon glyphicon-plus-sign"></span> Create Cost Log</button>
+     </div>
+    
+    
+</div>
+
+

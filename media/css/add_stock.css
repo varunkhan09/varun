@@ -1,0 +1,100 @@
+#input_date_t_add_stock
+{
+	height: 31px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.add_stock_page_content
+{
+	margin:0px;
+	margin-top:130px;
+	margin-bottom:40px;
+}
+
+.date_textbox
+{
+	/*
+	margin-left: 2%;
+	border-radius: 6px;
+	font-weight:bold;
+	height:30px;  
+	font-family: 'Raleway';
+	*/
+}
+
+.datepicker
+{
+	border-right: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.datepicker-dropdown
+{
+	top:165px !important;
+}
+
+.content_table_division
+{
+	margin-top:20px;
+	padding:0px;
+}
+
+.table_heading_row
+{
+	font-size:20px;
+	color:white;
+	background-color:#009ACD;
+	padding:90px;
+	font-family: Open Sans;
+	height:56px;
+}
+
+.table_data_row
+{
+	background-color:#DCDCDC;
+	font-family: 'Raleway', sans-serif;
+	height:100px;
+}
+
+.table_data_row:hover
+{
+	background-color:#D3D3D3;
+}
+
+.add_stock_product_type_textbox
+{
+	width:100%;
+}
+
+.calender_icon
+{
+	margin-left:10px;
+	vertical-align: middle;
+	font-size:28px;
+}
+
+
+.normal_black_1
+{
+	font-family:Open Sans;
+	font-size:16px;
+}
+
+#item_name_t2
+{
+	
+}
+
+.tt-dropdown-menu
+{
+	width:100%;
+	background-color:white;
+	border:1px solid #DCDCDC;
+}
+
+#calender_icon:hover
+{
+	cursor:pointer;
+}

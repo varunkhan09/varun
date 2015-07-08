@@ -1,0 +1,183 @@
+<style>
+    img.ui-datepicker-trigger {
+        margin-top: -60px;
+        margin-left: 261px;
+        height: 38px;
+    }
+
+input.form-control {
+    margin-left: 65px;
+    width: 300px;
+}
+</style>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Vehicle's Fuel Log</div>
+  <div class="panel-body" style="background:#fff;">
+            <div ng-controller="vehicleFuelController">
+    
+    <div ng-show="vehicle_fuel_list_action">
+        <table style="background:#fff;margin-left:0%;width:100%;text-align:left; font-size:13px;" class="table table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <!--                        <th><input type="checkbox" ng-checked="allchkboxVal" ng-model="allchkbox" ng-change="check_uncheck_all()"/></th>-->
+                    <th>Date</th><th>Vehicle</th><th>Purchaser</th><th>Notes</th> <th>Liter</th><th>Rate</th><th>Total Price</th>       
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat='vehicle in vehicle_fuel_record'>
+                    <td>{{$index + 1}}</td>
+                    <!--                        <td><input type="checkbox" ng-model='chk_unchk' ng-change="check_uncheck()"/></td>-->
+                    <td>{{vehicle.date| date:'dd/MM/yyyy'}}</td>
+                    <td>{{vehicle.vehicle_model_name}}</td>
+                    <td>{{vehicle.purchaser}}</td>
+                    <td>{{vehicle.notes}}</td>
+                    <td>{{vehicle.liter}}</td>
+                    <td>{{vehicle.rate| currency:"&#8377;" }}</td>
+                    <td>{{ (vehicle.rate * vehicle.liter) | currency:"&#8377;"}}</td>
+
+
+                </tr>
+                <tr>
+                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td> <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td> <td>&nbsp;</td>  
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><strong>Total:</strong></td>
+                    <td><strong>{{totalcost| currency:"&#8377;"}}</strong></td>
+                </tr>
+            </tbody>
+        </table> 
+    </div>
+
+
+    <div ng-show='save_cancel_div_toggle'>
+       <!--  <div style="display: inline-block;float: left;"> -->
+           <!--  <h3 style="margin-left: 10px;margin-top: 10px;">Vehicle's Fuel Log Entry Form</h3> -->
+      <!--   </div> -->
+    </div>
+
+
+    <div style="padding-left:10px;" ng-show="add_new_vehicle_fuel">
+        <form name="vflog_entry">
+
+            <table class="table-responsive">
+                <tr>
+                    <td width="50%" style="vertical-align: top;">
+                        <table>
+                            <thead> <p class="horizontal_heading heading-pad">Vehicle Details</p></thead>
+                            <tbody>
+                                <tr>
+                                    <td><label class="label-pad control-label">Vehicle</label></td>
+                                    <td>
+                                        <input ng-hide="true" type="text" ng-model="vehicleFuel.vehicle_id"/>
+                                        <input required typeahead-on-select="set_vehicle($item)" ng-model="vehicleFuel.vehicle" typeahead="item.model_brand as (item.model_brand+' / '+item.model_name+' / '+ item.licence_plate) for item in fuel_vehicles | filter:$viewValue | limitTo:10" placeholder="Select Vehicle" class="form-control" style="width:275px" type="text" >
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </td>
+                    <td width="50%" style="vertical-align: top;">
+                        <table class="table-responsive">
+                            <thead> <p class="horizontal_heading heading-pad">Refueling Details </p></thead>
+                            <tbody>
+                                <tr>
+                                    <td><label class="label-pad control-label">Liter</label></td>
+                                    <td><input required class="form-control" style="width:300px" type="text" placeholder='0.00' ng-model="vehicleFuel.liter"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="label-pad control-label">Price Per Liter</label></td>
+                                    <td><input required class="form-control" style="width:300px" type="text" placeholder='0.00' ng-model="vehicleFuel.rate"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="label-pad control-label">Total Price</label> </td>
+                                    <td><input class="form-control" style="width:300px" type="text" placeholder='0.00' ng-model="vehicleFuel.totalcost"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td width="50%" style="vertical-align: top;">
+                        <table class="table-responsive">
+
+                            <thead> <p class="horizontal_heading heading-pad"> Odometer Details </p></thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="4"><label class="label-pad control-label" style="margin-left:2px;padding-top: 10px;">Odometer Value</label></td>
+                                    <td rowspan="4"><input class="form-control" style="width:275px" type="text" ng-model="vehicleFuel.odometer" placeholder='0.00'/></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </td>
+                    <td width="50%" style="vertical-align: top;">
+                        <table class="table-responsive">
+                            <thead> <p class="horizontal_heading heading-pad"> Additional Details </p></thead>
+                            <tbody>
+
+                                <tr>
+                                    <td><label class="label-pad control-label">Purchaser</label></td>
+                                    <td>
+                                        <input ng-hide="true" type="text" ng-model="vehicleFuel.purchaser"/>
+
+                                        <input type="text" required class="form-control" style="width:300px" typeahead-on-select="set_purchaser($item)" ng-model="vehicleFuel.driver" typeahead="item.name for item in drivers | filter:$viewValue | limitTo:10" placeholder="Select purchaser or driver">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label class="label-pad control-label">Invoice Reference</label>  </td>
+                                    <td><input class="form-control" style="width:300px" type="text" ng-model="vehicleFuel.invoice_reference" placeholder="Enter invoice reference (if applicable)" /></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="label-pad control-label">Supplier</label></td>
+                                    <td><input class="form-control" style="width:300px" type="text" ng-model="vehicleFuel.supplier" placeholder="Enter supplier name" /></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="label-pad control-label">Date</label></td>
+                                    <td><input style="margin-top:2px;" class="form-control" type="text" ng-model="vehicleFuel.date" required date-picker placeholder="Select Date" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="vertical-align: text-top;"> 
+                        <div class="form-group">
+                            <label class="horizontal_heading heading-pad label-pad control-label" for='vehicle-fuel-notes'>Notes</label>
+                            <textarea style="width: 100%" class="form-control" id='vehicle-fuel-notes' placeholder="Write here any other information..." ng-model="vehicleFuel.notes" name="notes" rows="3" class="input-no-width rounded shaded left clearboth"></textarea>
+                        </div>                      
+                    </td>
+                </tr>
+
+            </table>  
+            <button class="btn btn-primary" type="submit" ng-disabled="vflog_entry.$invalid" ng-click="vehicle_fuel_save()"> <span class="glyphicon glyphicon-plus-sign"></span> Save</button>
+            <button class="btn btn-default" type="button" ng-click="vehicle_fuel_cancel()"> <span class="glyphicon glyphicon-remove-circle"></span> Cancel</button> 
+        </form>
+    </div>
+
+
+    <div ng-show='btn_vehicle_fuel_create'>
+        <div style="display: inline-block;float: right;padding-right:10px; ">
+            <button style="margin-left: 10px;margin-top: 10px;" class="btn btn-default" ng-click="vehicle_fuel_create()"><span class="glyphicon glyphicon-plus-sign"></span> Add Fuel Log</button>
+        </div>  
+    </div>
+
+</div>
+
+</div>
+</div>
+
+

@@ -1,0 +1,46 @@
+html
+{
+	background-color:white;
+}
+
+.odoo_app_main_div
+{
+	margin-top:50px;
+}
+
+.odoo_app_left_ul
+{
+	position:absolute;
+	top:110px;
+	background-color:#EEEEEE;
+}
+
+.side-nav li a:hover, .side-nav li a:focus
+{
+	background-color: #DDDDDD !important;
+}
+
+.side-nav>li>ul>li>a
+{
+	color:#337ab7;	
+}
+
+.side-nav>li>ul>li>a:hover
+{
+	color:#23527c;
+}
+
+.panel-body > table
+{
+	margin-bottom:0px;
+}
+
+.panel-body
+{
+	background-color:white;
+}
+
+.cnv-vehicle > .ng-scope > .ng-scope
+{
+	border:1px solid #EEEEEE;
+}

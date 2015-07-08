@@ -1,0 +1,39 @@
+.myvendors_panel_heading
+{
+	background-color:#009ACD;
+	color:white;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.myvendors_body_div
+{
+	background-color:#DCDCDC;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.myvendors_body_table
+{
+	margin-left:5%;
+	width:90%;
+}
+
+.myvendors_body_table_header_div
+{
+	color:#009ACD;
+}
+
+.myvendors_operations_div
+{
+	margin-top:30px;
+}
+
+.myvendors_below_operations_div
+{
+	margin-top:20px;
+	background-color:#DCDCDC;
+	padding-top:10px;
+	padding-bottom:10px;
+	display:none;
+}

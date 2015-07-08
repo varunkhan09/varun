@@ -1,0 +1,161 @@
+
+<style>
+    img.ui-datepicker-trigger {
+        margin-top: -60px;
+        margin-left: 325px;
+        height: 35px;
+        width: 30px;
+    }
+
+input.form-control.ng-pristine.ng-untouched.ng-valid {
+width: 355px;
+}
+
+</style>
+
+<div style="padding-left:10px;">
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Vehicle Service Log Entry Form</div>
+  <div class="panel-body" style="margin-left:0%;background:#fff">
+     <form name="vservice_log_entry" ng-submit="submit()">  
+        <table > 
+            <tr>  
+                <td width="50%" style="vertical-align: top;">
+                    <table class="table-responsive">
+                        <thead> <p class="horizontal_heading heading-pad">  Services Details </p></thead>
+                        <tbody>
+                            <tr>
+                                <td><label class="label-pad control-label">Vehicle</label></td>
+                                <td>
+                                    <input ng-hide="true" type="text" ng-model="vehicleService.vehicle_id"/>
+                                    <input style="width:350px;"  required class="form-control" type="text" typeahead-on-select="set_vehicle($item)" ng-model="vehicleService.vehicle" typeahead="item.model_brand as (item.model_brand+' / '+item.model_name+' / '+ item.licence_plate) for item in service_vehicles | filter:$viewValue | limitTo:10" placeholder="Select vehicle">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label class="label-pad control-label">Service Type</label></td>
+                                <td>
+                                    <input ng-hide="true" type="text" ng-model="vehicleService.cost_type_id"/>
+                                    <input required class="form-control" type="text" ng-model="vehicleService.type" typeahead-on-select="set_serviceType($item)" typeahead="item.type for item in service_costType | filter:$viewValue | limitTo:10" placeholder="Select service type" >
+                                    <button ng-click="addServiceType()" class="form-control" style="width:40px;margin-top: -34px;margin-left: 310px;" type="button" ><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label class="label-pad control-label">Total Price</label></td>
+                                <td><input required class="form-control" type="text" ng-model="vehicleService.totalprice" placeholder="Enter cost price"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+
+
+                <td width="50%" style="vertical-align: top;padding-left: 3%;">
+                    <table class="table-responsive">
+                        <thead> <p class="horizontal_heading heading-pad"> Odometer Details </p></thead>
+                        <tbody>
+                            <tr>
+                                <td><label class="label-pad control-label" style="margin-left:2px;padding-top: 10px;">Odometer Value</label></td>
+                                <td><input style="width:325px;" class="form-control" type="text" ng-model="vehicleService.odometer" placeholder='0.00'/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>  
+
+
+
+            <tr>
+                <td width="50%" style="vertical-align: top;">
+                    <table class="table-responsive">
+                        <thead> <p class="horizontal_heading heading-pad"> Additional Details </p></thead>
+                        <tbody>
+        <tr>
+            <td><label class="label-pad control-label">Purchaser</label></td>                
+            <td>
+                <input type="text" ng-show="false" ng-model="vehicleService.purchaser_id">
+                <input placeholder="Select purchaser or driver"class="form-control" type="text" typeahead-on-select="set_purchaser($item)" ng-model="vehicleService.purchaser" typeahead="item.name for item in purchasers | filter:$viewValue | limitTo:10">
+            </td>
+        </tr> 
+
+
+        <tr>
+            <td><label class="label-pad control-label">Supplier</label></td>
+            <td><input placeholder="Enter supplier" class="form-control" type="text" ng-model="vehicleService.supplier" /></td>
+        </tr> 
+
+        <tr>
+            <td><label class="label-pad control-label">Invoice Reference </label></td>
+            <td><input placeholder="Enter invoice reference (if applicable)" class="form-control" type="text" name="invoice_reference" ng-model="vehicleService.invoice_reference"></td>
+        </tr> 
+
+        <tr>
+            <td><label class="label-pad control-label">Date</label></td>
+            <td><input ng-model="vehicleService.date" date-picker required class="form-control" type="text"/></td>
+        </tr> 
+
+                        </tbody>
+                    </table>
+                </td>
+
+                <td width="50%" style="vertical-align: top;padding-left: 3%;">
+                    <div class="form-group controls">
+                        <label class="horizontal_heading heading-pad label-pad control-label" for='vehicle-service-notes'>Notes</label>
+                        <textarea ng-model="vehicleService.notes" style="height: 168px; width: 100%" id='vehicle-service-notes' placeholder="Write here any other information..."  name="notes" rows="6" class="form-control input-no-width rounded shaded left clearboth"></textarea>
+                    </div>                      
+                </td>
+            </tr>
+        </table> 
+
+        <button style="margin-top:15px;margin-bottom:15px;padding: 10px;" class="btn btn-primary" type="submit" ng-disabled="vservice_log_entry.$invalid">
+            <span class="glyphicon glyphicon-ok-circle"></span> Submit
+        </button>
+        <button style="margin-top:15px;margin-bottom:15px;padding: 10px;" class="btn btn-default" type="button" ng-click="cancel()">
+            <span class="glyphicon glyphicon-remove-circle"></span> Cancel
+        </button> 
+    </form>
+
+  </div>
+</div>
+
+
+
+
+   
+    
+    
+    
+     <script type="text/ng-template" id="scost_type.html">
+        <div class="modal-header">
+        <button type="button" ng-click="cancel()" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+
+        <div class="modal-header">
+            <h4 class="control-label modal-title">Create: Vehicle Cost Type</h4>
+        </div>
+
+        <div class="modal-body">
+            <label class="control-label">Enter Cost Type:</label>
+            <input required class="form-control" type="text" ng-model="cost.type"></input>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="submit()"> <span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
+            <button class="btn btn-warning" ng-click="cancel()"> <span class="glyphicon glyphicon-remove-circle"></span> Cancel</button>
+        </div>
+
+        </div>
+    </script>
+    
+
+ <!--    
+<div class="action-pane">
+    <div style="display: inline-block;float: left;">
+        <h3 style="margin-left: 10px;margin-top: 10px;">Vehicle Service Log Entry Form</h3>
+    </div>
+    <div style="display: inline-block;float: right;padding-right:10px; "></div>
+</div> -->
+
+</div>
+

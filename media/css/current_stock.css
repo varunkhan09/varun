@@ -1,0 +1,72 @@
+.current_stock_page_content
+{
+	margin:0px;
+	margin-top:80px;
+}
+
+.current_stock_heading_division
+{
+	background-color:#009ACD;
+	color:white;
+}
+
+.heading1_label
+{
+	font-size:22px;
+	color:white;
+}
+
+.each_flower
+{
+	margin-top:0px;
+}
+
+.first_flower
+{
+	margin-top:10px;
+}
+
+.flower_name_div
+{
+	vertical-align:middle;
+	margin-top:50px;
+	border-top:0px;
+}
+
+.heading2_label
+{
+	font-size:20px; color:#00688B; margin:0px;
+}
+
+.data_labels_bold
+{
+	font-family: 'Raleway', sans-serif; font-weight:bold; font-size:15px;
+}
+
+.data_labels_normal
+{
+	font-family: 'Raleway', sans-serif; font-size:15px;
+}
+
+.body_container
+{
+	margin-bottom:100px;
+	margin-top:140px;
+}
+
+.current_stock_level1
+{
+	margin-top:10px;
+	background-color:#DEDEDE;
+	border:1px solid #A3A3A3;
+	//margin-left:5px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.current_stock_level1:hover
+{
+	background-color:#F0F0F0;
+	cursor:pointer;
+}

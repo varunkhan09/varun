@@ -1,0 +1,59 @@
+.stock_report_main_content_div
+{
+	margin:0px;
+	margin-top:140px;
+}
+
+
+.table
+{
+	margin-left:20%;
+	width:60%;
+}
+
+
+.stock_report_result_table
+{
+	empty-cells:hide;
+}
+
+.tr_clicked:hover
+{
+	cursor:pointer;
+	background-color:rgba(200, 200, 200, 0.5);
+}
+
+.stock_report_heading_tr
+{
+	background-color:#009ACD;
+	font-size:22px;
+	color:white;
+	font-weight:bold;
+}
+
+.stock_report_heading_tr:hover
+{
+	cursor:pointer;
+	background-color:#009ACD;
+	font-size:22px;
+	color:white;
+}
+
+.stock_report_ending_tr
+{
+	background-color:#009ACD;
+	font-size:18px;
+	color:white;
+}
+
+.stock_report_ending_tr:hover
+{
+	cursor:pointer;
+}
+
+
+
+.stock_report_result_table2
+{
+	margin-bottom:20px;
+}

@@ -1,0 +1,124 @@
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Driver Edit Form</div>
+
+  <div class="panel-body" style="margin-left:0%;background:#fff">
+            <div style="min-height: 450px;" ng-controller="driverEditCtrl">
+    <div class="pad form-area-to-edit-driver" style="margin-top:25px;">     
+        <form name="driver_form">
+            <input type="text" ng-hide="true" ng-model="driver.did">
+            <table class="table-responsive">
+                <tr>
+                    <td width="20%"><label class="control-label">Driver Name </label></td>
+                    <td width="80%"><input required class="form-control tbl-text-spacing" type="text" placeholder="Name" ng-model="driver.name"></td>     
+                </tr>
+                <tr>
+                    <td width="20%"><label class="control-label">Company Name</label></td>
+                    <td width="80%"><input class="form-control tbl-text-spacing" type="text" placeholder="Company" ng-model="driver.company"></td>
+                </tr>
+                <tr>
+                    <td width="20%"><label class="control-label">Tags</label></td>
+                    <td width="80%"><input class="form-control tbl-text-spacing" type="text" placeholder="Tag" ng-model="driver.tags"></td>
+
+                </tr>
+            </table>
+
+            <table class="table-responsive">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+                            <table class="table-responsive">
+                                <tbody>
+                                    <tr>
+                                        <td width="20%"><label class="control-label">Address</label></td>
+                                        <td width="80%">
+
+                                            <div class="form-group cst-form-group">
+                                                <input class="form-control tbl-text-spacing" placeholder="Street..." ng-model="driver.street1" type="text">
+                                                <input class="form-control tbl-text-spacing" type="text" ng-model="driver.street2">
+                                                <input class="form-control tbl-text-spacing" placeholder="City" type="text" ng-model="driver.city">
+                                                <input class="form-control tbl-text-spacing" type="text" placeholder="State" ng-model="driver.state"> 
+                                                <input class="form-control tbl-text-spacing" numbers-only maxlength="24" placeholder="ZIP" type="text" ng-model="driver.zipcode">
+                                                <input type="text" class="form-control tbl-text-spacing" placeholder="Country" ng-model="driver.country">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%"><label class="control-label">Website</label></td>
+                                        <td width="80%">
+                                            <div>
+                                                <input class="form-control tbl-text-spacing" type="text" ng-model="driver.website" placeholder="www.domain-name.com">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </td>
+
+                        <td width="50%" style="border-left: 1px #ccc dotted; padding-left: 20px;">
+   
+                                <table class="table-responsive">
+                                    <tbody>
+                                        
+                                        <tr>
+
+                                            <td width="20%"><label class="control-label">Job Position</label></td>
+                                            <td width="80%">
+                                                <input class="form-control tbl-text-spacing" ng-model="driver.job_profile" placeholder="Job Profile " type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%"><label class="control-label">Phone</label></td>
+                                            <td width="80%"><input class="form-control tbl-text-spacing" numbers-only ng-model="driver.phoneno" placeholder="Phone Number" type="text"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%"><label class="control-label">Mobile</label></td>
+                                            <td width="80%"><input required class="form-control tbl-text-spacing" numbers-only ng-model="driver.mobileno" placeholder="Mobile Number"  type="text"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%"><label class="control-label">Fax</label></td>
+                                            <td width="80%"><input class="form-control tbl-text-spacing" ng-model="driver.fax" type="text"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%"><label class="control-label">Email</label></td>
+                                            <td width="80%"><input class="form-control tbl-text-spacing" ng-model="driver.email" type="text"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%"><label class="control-label">Title</label></td>
+                                            <td width="80%"><input  class="form-control tbl-text-spacing" type="text" ng-model="driver.title"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div ng-show='btn_edit_driver' style="margin-top:15px;margin-bottom:15px;" >
+        <button class="btn btn-primary" style="margin-left: 10px;margin-top: 10px;" ng-click="save_edit_driver(driver)"><span class="glyphicon glyphicon-ok-circle"></span> Save</button>   
+        <button class="btn btn-danger" style="margin-left: 10px;margin-top: 10px;" ng-click="cancel_edit_driver()"><span class="glyphicon glyphicon-remove-circle"></span> Cancel</button>
+    </div>
+</div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+ <!-- <div class="action-pane">
+      <div style="display: inline-block;float: left;">
+            <h3 style="margin-left: 10px;margin-top: 10px;">Driver Edit Form</h3>
+        </div>
+      
+    </div> -->

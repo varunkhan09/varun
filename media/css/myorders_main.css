@@ -1,0 +1,228 @@
+.heading_myorders
+{
+	font-size:32px; color:#009ACD; font-weight:bold;
+}
+
+.myorders_table
+{
+	width:96%;
+	text-align:center;
+	margin:0px 0px 20px 0px;
+}
+
+.buttons
+{
+	margin-left: 2%; border-radius: 6px; background-color: #00688B; color: white; font-weight:bold; height:30px; border:0; font-family: 'Raleway';
+}
+.buttons:hover
+{
+	background-color: #4A708B; cursor:pointer;
+}
+
+.table_heading_row
+{
+	font-size:20px;
+	color:white;
+	background-color:#009ACD;
+	padding:90px;
+	font-family: Open Sans;
+	height:56px;
+}
+
+.table_heading_row_small
+{
+	font-size:18px;
+	color:white;
+	background-color:#009ACD;
+	padding:90px;
+	font-family: Open Sans;
+	height:30px;
+}
+
+.table_data_row_myorders
+{
+	background-color:#DCDCDC;
+	font-family: 'Raleway', sans-serif;
+	height:100px;
+}
+
+.table_data_row_myorders:hover
+{
+	background-color:#D3D3D3;
+}
+
+.notice_labels
+{
+	font-size:20px;
+	color:#00688B;
+	font-family: Open Sans;
+}
+
+.order_details_div
+{
+	position:absolute;
+	display:none;
+	left:10px;
+	float:left;
+	//border:3px solid black;
+	//background-color:red;
+	width:1200px;
+}
+
+.order_products_table
+{
+	border:0px black solid;
+	text-align:center;
+	background-color:#EEEEE0;
+}
+
+.order_products_table_cell
+{
+	border: 3px solid black;
+	width:16%;
+}
+
+.main_buttons
+{
+	margin-left: 2%; border-radius: 6px; background-color: #009ACD; color: white; font-weight:bold; height:30px; border:0; font-family: 'Raleway';
+}
+.main_buttons:hover
+{
+	background-color: #00688B; cursor:pointer;
+}
+
+.checkbox
+{
+	height:15px;
+	width:15px;
+}
+
+.filter_table
+{
+	width:100%;
+	text-align:center;
+	margin:5px 0px 0px 0px;
+	border-left:3px solid #009ACD;
+	border-right:3px solid #009ACD;
+	border-top:3px solid #009ACD;
+}
+
+.base_div
+{
+	display:block;
+	position:fixed;
+	background-color:white;
+	top:100px;
+	left:0px;
+	width:100%;
+	text-align:center;
+	border-bottom:3px solid #009ACD;
+	margin:0% 0% 3% 0%;
+}
+
+.datepicker
+{
+	width:90px;
+}
+
+.main_buttons_red
+{
+	margin-left: 2%; border-radius: 6px; background-color: #B22222; color: white; font-weight:bold; height:30px; border:0; font-family: 'Raleway';
+}
+
+.main_buttons_red:hover
+{
+	background-color: #8B1A1A; cursor:pointer;
+}
+
+.main_buttons_yellow
+{
+	margin-left: 2%; border-radius: 6px; background-color: #EEB422; color: white; font-weight:bold; height:30px; border:0; font-family: 'Raleway';
+}
+
+.main_buttons_yellow:hover
+{
+	background-color: #CD9B1D; cursor:pointer;
+}
+
+.main_buttons_green
+{
+	margin-left: 2%; border-radius: 6px; background-color: #6E8B3D; color: white; font-weight:bold; height:30px; border:0; font-family: 'Raleway';
+}
+
+.main_buttons_green:hover
+{
+	background-color: #556B2F; cursor:pointer;
+}
+
+.main_buttons_orange
+{
+	margin-left: 2%; border-radius: 6px; background-color: #FF8C00; color: white; font-weight:bold; height:30px; border:0; font-family: 'Raleway';
+}
+
+.main_buttons_orange:hover
+{
+	background-color: #CD6600; cursor:pointer;
+}
+
+select
+{
+	background-color: white;
+}
+
+.orders_loader
+{
+	width:94%;
+	text-align:center;
+	margin:0px 0px 250px 50px;
+}
+
+.pagination_buttons
+{
+	border-radius: 20px;
+	font-size: 15px;
+	background-color: #009ACD;
+	padding: 0px;
+	height: 25px;
+	width: 25px;
+	color: white;
+	border: 2px solid #607B8B;
+}
+
+.pagination_buttons:hover
+{
+	cursor:pointer;
+}
+
+.pagination_buttons_selected
+{
+	background-color:white;
+	color:#009ACD;
+}
+
+.pagination_div
+{
+	float:left;
+	position:fixed;
+	bottom:0px;
+	right: 0px;
+	margin:0px 0px 5px 0px;
+	text-align:center;
+	width:auto;
+}
+
+.pagination_textbox
+{
+	height:25px;
+	width:35px;
+}
+
+.print_ch
+{
+	margin-left:50% !important;
+}
+
+.table_myorders
+{
+	margin-top:190px;
+}

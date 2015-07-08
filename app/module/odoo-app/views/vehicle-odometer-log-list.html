@@ -1,0 +1,66 @@
+
+
+
+
+
+ <accordion close-others="showList">
+    <accordion-group heading="{{vehicleData.title}} ({{vehicleData.record.length ? vehicleData.record.length : 0 }})" ng-repeat="vehicleData in dataByVehicles">
+      {{vehicleData.content}}
+     
+      <table style="background:#fff;margin-left:0%;width:100%;text-align:left;" class="table table-hover table-responsive tfont-size">
+          <thead>
+            <th>#</th>
+            <th>#Ref ID</th>
+            <th>Date</th>
+            <th>Vehicle</th>
+            <th>Opening Odometer</th> 
+            <th>Closing Odometer</th> 
+            <th>Odometer</th> 
+            <th>Price</th>
+<!--            <th>Unit</th>-->
+            <th>#Edit Ref ID</th>
+            <th>Comment</th>
+         </thead>
+         
+         <tbody>
+             <tr ng-repeat="record in vehicleData.record">
+                 <td>{{$index+1}}</td>
+                 <td>{{'OD-'+record.id+'/'+record.vid}}</td>
+                 <td>{{record.date}}</td>
+                 <td>{{vehicleData.title}}</td>
+                 <td>{{record.op_odometer }}</td>
+                 <td>{{record.cls_odometer}}</td>
+                 <td>{{record.cls_odometer - record.op_odometer }} Km</td>
+                 <td>{{(record.cls_odometer - record.op_odometer) * 2.25 | currency:"&#8377;" }}</td>
+<!--                 <td>{{record.unit}}</td>-->
+                 <td>{{record.edited_ref}}</td>
+                 <td>{{record.comment}}</td>             
+             </tr>
+              
+                <tr>
+                    
+                    <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>
+                    <td><strong>Total</strong></td>
+                    <td><strong>{{ vehicleData.totalCostOfEachRecord | currency:"&#8377;" }}</strong></td>
+                      <td></td>  <td></td>
+                </tr>
+         </tbody>
+      </table>
+    </accordion-group>
+  </accordion>
+
+
+
+
+
+<div class="action-pane">
+     <div style="display: inline-block;float: left;">
+            <h3 style="margin-left: 10px;margin-top: 10px;">Vehicle's Odometer Log List</h3>
+     </div>
+    
+     <div style="display: inline-block;float: right;padding-right:10px; ">
+         <button style="margin-left: 10px;margin-top: 10px;" class="btn btn-default" ng-click="create_vodoometer_log('/vehicles-odometer-logs')"><span class="glyphicon glyphicon-plus-sign"></span> Create Odometer Log</button>
+     </div>  
+</div>
+
+

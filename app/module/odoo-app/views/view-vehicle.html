@@ -1,0 +1,206 @@
+View Vehicles 
+<style>
+    .btn-custom{
+        padding:2px 5px;
+
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        padding: 2px; 
+        line-height: 1.25;
+        vertical-align: top;
+        border-top: 0px solid #ddd;
+    }
+    .horizontal_heading {
+        color: #337ab7;
+        font-size: 12px;
+        font-weight: bold;
+        margin: 5px 0 1px;
+    }
+
+    sideclear {
+        clear: both;
+    }   
+</style>
+
+<div ng-controller="viewVehicleCtrl">
+    
+    
+    
+    <table class="table table-responsive">
+        <tr style="float:right">
+            <td></td>
+            <td>
+                <div class="form-group">
+                    <button type="button" class="btn-custom-design btn-custom btn btn-primary"><i class="fa fa-inr fa-fw"></i> <br>Costs <strong> 0 </strong></button>
+                    <button type="button" class="btn-custom-design btn-custom btn btn-primary"><i class="fa fa-wrench fa-fw"></i> <br>Services <strong> 0 </strong></button>
+                    <button type="button" class="btn-custom-design btn-custom btn btn-primary"><i class="fa fa-flask fa-fw"></i> <br>Fuel <strong> 0 </strong></button>
+                    <button type="button" class="btn-custom-design btn-custom btn btn-primary"><i class="fa fa-tachometer fa-fw"></i> <br>Odometer <strong> 0 </strong></button>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    <div class="cnv_model_image">
+                        <img ng-src="{{vehicleimag}}" class="img-thumbnail" alt="Thumbnail Image">
+                    </div>
+
+                    <div class="cnv_model_entry">                   
+                        <label class="custom-font-size control-label">Model</label>{{model}}                  
+                        <br>
+                        <label class="custom-font-size control-label" for="lplate">License Plate </label> {{ licence_plate}}
+                        <br>
+                        <label class="custom-font-size control-label" for="tag" style="">Tags</label>{{tags}}
+                        </div>
+
+                </div>
+
+            </td>
+            <td></td>
+        </tr>
+
+    </table>
+
+    <div class="horizontal_heading sideclear"> General Properties </div>
+    <table class="table table-responsive">
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td><input id="cnv-id"  class="custom-txt-box form-control" ng-model="id" placeholder="Driver Name" type="text"  ng-model="id" ng-hide="true" > </td>                                
+                            </tr>
+                            <tr>
+                                <td><label  class="custom-font-size control-label" for="cnv-driver"> Driver </label> </td>
+                                <td>{{drivername}}</td>                                
+                            </tr>
+                            <tr>
+                                <td><label class="custom-font-size control-label" for="cnv-location"> Location </label> </td>
+                                <td>{{driverlocation}}</td>
+                              </tr>
+                            <tr>
+                                <td><label class="custom-font-size control-label" for="cnv-chassis-no" title=""> Chassis Number </label></td> 
+                                <td>{{chassis_no}}</td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </td>
+
+                <td>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td><label class="custom-font-size control-label" for="cnv-last-odometer"> Last Odometer</label></td>
+                                <td>{{last_odometer}}</td>    
+                            </tr>
+                            <tr>
+                                <td> <label class="custom-font-size control-label" for="cnv-last-acqui" data-original-title="" title=""> Acquisition Date  </label></td> 
+                                <td>
+                                   {{acquisition_date}}
+                                </td>                                 
+                            </tr>
+                            <tr>
+                                <td><label class="custom-font-size control-label" for="cnv-value" title=""> Car Value </label></td>
+                                <td>{{car_value}}</td>    
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <table class="table table-responsive">
+        <tbody>
+            <tr>
+                <td width="50%">
+                    <div class="horizontal_heading">Additional Properties</div>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td width="1%"> <label class="custom-font-size control-label" for="cnv-seat-no" >Seats Number</label></td>
+
+
+                                <td width="99%">
+                                   {{seat_no}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="1%"> <label class="custom-font-size control-label" for="cnv-door-no">Doors Number</label> </td>
+                                <td width="99%">{{door_no}}</td>
+                                </tr>
+                            <tr>
+                                <td width="1%" > <label class="custom-font-size control-label" for="cnv-color">Color</label></td>
+                                <td width="99%">
+                                    {{color}}
+                                </td>
+                           </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+
+                <td width="50%">
+                    <div class="horizontal_heading">Engine Options</div>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td width="1%"> <label class="custom-font-size control-label" for="cnv-transmission">Transmission</label></td>
+                                <td width="99%">
+                                   {{transmission}}
+                                </td>                            
+                            </tr>
+                            <tr>
+                                <td width="1%"><label class="custom-font-size control-label" for="cnv-fuel-type">Fuel Type</label></td>                   
+                                <td width="99%">
+
+                                   {{fueltype}}
+
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td width="1%"><label class="custom-font-size control-label" for="cnv-co-emission">CO<sub>2</sub> Emissions (g/km)</label></td>       
+                                <td width="99%">
+                                   {{ccarbon_dioxide}}       
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="1%"> <label class="custom-font-size control-label" for="cnv-hp">Horsepower</label></td>
+                                <td width="99%">
+                                        {{horsepower}}
+                                  </td>
+                            </tr>
+
+                            <tr>
+                                <td width="1%"><label class="custom-font-size control-label" for="cnv-hp-tax">Horsepower Taxation</label></td>
+                                <td width="99%">
+                                {{horsepower_taxation}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="1%"><label class="custom-font-size control-label" for="cnv-power">Power <span>(Kw)</span></label></td>
+                                <td width="99%">
+                                    {{power}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+        <!--
+        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+        <button type="button" ng-click="cancelAddNewVehicles()" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Discard</button>
+   -->
+        </div>
+    
+    
+    
+</div>

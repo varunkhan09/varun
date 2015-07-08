@@ -1,0 +1,249 @@
+
+<div id="datatable">
+    <h4 style="text-align: center"> All Driver Vehicle Log Report </h4>   
+    <h5 style="text-align: center"><strong>{{Report.fromDate|date:'MMM d, y'}}  To  {{Report.toDate|date:'MMM d, y'}}</strong></h5>
+
+    <h5 style="text-align: right;margin-right: 10px">Date: {{date|date:'MMM d, y h:mm:ss a'}}</h5>
+
+    <div ng-if="show_odometer" class="additional-report">
+        <div ng-if="odometer">
+            <p class="report-heading"><strong>Odometer Log</strong></p>
+            <table class="table" style="background:#fff;margin-left:0%;width:100%;text-align:left;">
+                <thead>
+                    <tr>
+                        <th style="white-space: nowrap;">S.No</th>
+                        <th style="white-space: nowrap;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Delivery Boy</th>
+                        <th style="white-space: nowrap;">Odometer</th>
+                        <th style="white-space: nowrap;">Amount&nbsp;&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Notes</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in odometerData">
+                        <td>{{$index + 1}}</td>
+                        <td>{{row.date}}</td>
+                        <td>{{row.name}}</td>
+                        <td>{{row.cls_odometer - row.op_odometer}}</td>
+                        <td>Rs {{((row.cls_odometer - row.op_odometer) * rate) | number:2}}</td>                 
+                        <td>{{row.edited_ref}}&nbsp;&nbsp;&nbsp;{{row.comment}}</td>
+                    </tr>
+                    
+                    <tr>
+                         <td></td>
+                        <td></td>
+                        <td></td>
+                        <td> <strong>Total</strong></td>
+                        <td><strong>Rs {{ototal_cost| number:2}}</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>  
+    </div>
+
+
+
+
+    <div ng-if="show_additional" class="additional-report">
+        <div ng-if="additional">
+            <p class="report-heading"><strong>Additional Log</strong></p>
+            <table style="background:#fff;margin-left:0%;width:100%;text-align:left;" class="table">
+                <thead>
+                    <tr>
+                        <th style="white-space: nowrap;">S.No&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Delivery Boy&nbsp;</th>
+                        <th style="white-space: nowrap;">Delivery Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+
+                        <th style="white-space: nowrap;">Amount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in additionalData">
+                        <td>{{$index + 1}}</td>
+                        <td>{{row.date}}</td>
+                        <td>{{row.driver}}</td>
+                        <td>{{row.delivery_type}}</td>
+
+                        <td>Rs {{row.delivery_rate| number:2}}</td>
+                        <td>{{row.order_id}}&nbsp;&nbsp;&nbsp;{{row.notes}}</td>
+                    </tr>
+                    
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td> <strong>Total</strong></td>
+                        <td><strong>Rs {{atotal_cost| number:2}}</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>  
+    </div>
+
+
+    <div ng-if="show_fuel" class="fuel-report">
+        <div ng-if="fuel">
+            <p class="report-heading"><strong>Fuel Log</strong></p>
+            <table style="background:#fff;margin-left:0%;width:100%;text-align:left;" class="table">
+                <thead>
+                    <tr>
+                        <th style="white-space: nowrap;">S.No</th>
+                        <th style="white-space: nowrap;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Delivery Boy</th>
+                        <th style="white-space: nowrap;">Liter</th>
+                        <!--                    <th style="white-space: nowrap;">Rate</th>-->
+                        <th style="white-space: nowrap;">Amount&nbsp;&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in fuelData">
+                        <td>{{$index + 1}}</td>
+                        <td>{{row.date}}</td>
+                        <td>{{row.name}}</td>
+                        <td>{{row.liter}}</td>
+                        <!--                    <td>Rs {{row.rate}}</td>-->
+                        <td>Rs {{row.totalcost| number:2}}</td>
+                        <td>{{row.notes}}</td>
+                    </tr>
+                    
+                    <tr>
+                         <td></td>
+                        <td></td>
+                        <td></td>
+                        <td> <strong>Total</strong></td>
+                        <td><strong>Rs {{ftotal_cost| number:2}}</strong></td>
+                        <td></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div> 
+    </div>
+
+
+
+    <div ng-if="show_service" class="service-report">
+        <div ng-if="service">
+            <p class="report-heading"><strong>Service Log</strong></p>
+            <table style="background:#fff;margin-left:0%;width:100%;text-align:left;" class="table">
+                <thead>
+                    <tr>
+                        <th style="white-space: nowrap;">S.No</th>
+                        <th style="white-space: nowrap;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Delivery Boy</th>
+                        <th style="white-space: nowrap;">Type Of Service</th>
+                        <th style="white-space: nowrap;">Amount&nbsp;&nbsp;&nbsp;</th>
+                        <th style="white-space: nowrap;">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in serviceData">
+                        <td>{{$index + 1}}</td>
+                        <td>{{row.date}}</td>
+                        <td>{{row.purchaser}}</td>
+                        <td>{{row.type}}</td>
+                        <td>Rs {{row.totalprice| number:2}}</td>
+                        <td>{{row.notes}}</td>     
+                    </tr>
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td> <strong>Total</strong></td>
+                        <td><strong>Rs {{stotal_cost| number:2}}</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>  
+    </div>
+    
+    
+    <p></p>
+      <p><strong>Grand Total : Rs {{gross_total | number:2}} </strong></p>
+</div>
+
+
+
+
+<input class="btn btn-primary btn-sm" type="button" value="Download Pdf" id="btnSavePdf">
+<!-- <input class="btn btn-danger btn-sm" type="button" onclick="tableToExcel('datatable', 'Report')" value="Export to Excel">
+ -->
+<input class="btn btn-warning btn-sm" type="button" onclick="tableToExcelU('datatable', 'Report')" value="Excel Export">
+
+
+
+<script type="text/javascript">
+    
+    function tableToExcelU (table) {
+    if (!table.nodeType) table = document.getElementById(table);
+        download(table.outerHTML, "vehicle_log_report.xls", "application/vnd.ms-excel");
+    }
+ 
+    $(document).ready(function() {
+        $('#btnSavePdf').click(function() {
+            var doc = new jsPDF('p', 'pt', 'a4');
+            var source = $('#datatable').html();
+            var specialElementHandlers = {
+                '#bypassme': function(element, renderer) {
+                    return true;
+                }
+            };
+
+            margins = {
+                top: 40,
+                bottom: 25,
+                left: 40,
+                width: 522
+            };
+
+            doc.fromHTML(
+                    source // HTML string or DOM elem ref.
+                    , margins.left // x coord
+                    , margins.top // y coord
+                    , {
+                        'width': margins.width // max width of content on PDF
+                        , 'elementHandlers': specialElementHandlers
+                    },
+            function(dispose) {
+                // dispose: object with X, Y of the last line add to the PDF
+                //          this allow the insertion of new lines after html
+                doc.save('vehicle_log_report.pdf');
+            },
+                    margins
+                    );
+            //  doc.output("dataurlnewwindow");
+        });
+    });
+
+</script>
+
+
+
+<script type="text/javascript">
+    var tableToExcel = (function() {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                , base64 = function(s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                }
+        , format = function(s, c) {
+            return s.replace(/{(\w+)}/g, function(m, p) {
+                return c[p];
+            })
+        }
+        return function(table, name) {
+            if (!table.nodeType)
+                table = document.getElementById(table)
+            var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+</script>

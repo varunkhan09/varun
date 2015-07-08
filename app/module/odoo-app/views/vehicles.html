@@ -1,0 +1,23 @@
+<style type="text/css">
+
+</style>
+
+<div ng-controller="vehiclesController">
+    <div ng-show="showAddNewVehicles">
+        <div class="cnv-vehicle" ng-include="getScreenPage()"></div>
+    </div>
+
+    <div ng-show="vehicleslistsdisplay" >
+        <div ng-include="getDefaultVehiclesListPage()"></div>
+    </div>
+    
+    <div class="action-pane">
+        <div style="display: inline-block;float: right;padding-right:10px; ">
+            <button class="btn btn-default" ng-repeat="item in screens" ng-click="setScreenPage($index)" >
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                {{item}}
+            </button>
+        </div> 
+    </div>
+</div>
+

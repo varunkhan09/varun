@@ -1,0 +1,243 @@
+<style>
+    .btn-custom{
+        padding:2px 5px;
+
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        padding: 2px; 
+        line-height: 1.25;
+        vertical-align: top;
+        border-top: 0px solid #ddd;
+    }
+    .horizontal_heading {
+        color: #337ab7;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.25;
+        margin: 2px 0px 0px 2px;
+    }
+
+    sideclear {
+        clear: both;
+    }   
+
+</style>
+
+<div ng-controller="cnvController">
+    <div class="panel panel-default">
+      <div class="panel-heading">Vehicles Information</div>
+
+
+      <div class="panel-body" style="margin-left:0%;background:#fff">
+
+            <form name="new_vehicles_form"  role="form"  ng-submit="new_vehicles_form_submit()">
+            <table style="margin-left:0%;background:#fff;width:100%;text-align:left;"  class="table table-responsive">
+                        <tr>
+            
+                    <td width="50%">
+                        <div class="form-group">
+                            <div class="cnv_model_image"><img ng-src="{{vehicleimag}}" class="img-thumbnail" alt="Thumbnail Image"></div>
+                            <div class="cnv_model_entry">   
+                                <div style="margin-left:50px;padding-left:15px;">
+                                    <label class="custom-font-size control-label" for="model">Model</label>                    
+                                    <input style="width:450px" type="text"  id="model" placeholder="Vehicles Model" class="custom-txt-box form-control" typeahead-on-select="setModel($item)" ng-model="model" typeahead="item.model_brand as (item.model_brand+' / '+item.model_name) for item in models | filter:$viewValue | limitTo:10">
+                                </div>
+                                <div style="margin-left:50px;padding-left:15px;">
+                                    <label class="custom-font-size control-label" for="lplate">License Plate </label>
+                                    <input style="width:450px" type="text"  id="lplate" placeholder="Vehicles Licence Plate number" class="custom-txt-box form-control" ng-model="licenceplate">
+                                </div>
+                                <div style="margin-left:50px;padding-left:15px;">
+                                    <label class="custom-font-size control-label" for="tag" style="">Tags</label>
+                                    <input style="width:450px" type="text" id="tag" placeholder="Vehicles Tag" class="custom-txt-box form-control" ng-model="tags" >
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td width="50%">
+                        <div class="form-group" style="float:right;margin-top: 25px;padding: 2px;">
+
+                            <button style="height: 65px;width:95px; color:#fff; background:#009ACD;" type="button" ng-click="go_to_cost(id)" class="btn-custom-design btn-custom btn"><i class="fa fa-inr fa-fw"></i> <br>Costs <strong> {{cost_count}} </strong></button>
+
+                            <button style="height: 65px;width:95px; color:#fff;background:#009ACD;" type="button" ng-click="go_to_service(id)" class="btn-custom-design btn-custom btn"><i class="fa fa-wrench fa-fw"></i> <br>Services <strong> {{service_count}} </strong></button>
+
+                            <button style="height: 65px;width:95px; color:#fff;background:#009ACD;" type="button" ng-click="go_to_fuel(id)" class="btn-custom-design btn-custom btn"><i class="fa fa-flask fa-fw"></i> <br>Fuel <strong> {{fuel_count}} </strong></button>
+                            <button style="height: 65px;width:95px;color:#fff;background:#009ACD;" type="button" ng-click="go_to_odometer(id)" class="btn-custom-design btn-custom btn"><i class="fa fa-tachometer fa-fw"></i> <br>Odometer <strong> {{odometer_count}}</strong></button>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div class="horizontal_heading sideclear"> General Properties </div>
+            <table style="margin-left:0%;background:#fff;width:100%;text-align:left;" class="table table-responsive">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+                        <table style="margin-left:0%;background:#fff;width:100%;text-align:left;" class="table table-responsive">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input id="cnv-id" ng-model="id" type="text" ng-hide="true" >
+                                        </td>                                
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                    <label  class="custom-font-size control-label" for="cnv-driver"> Driver </label> 
+                                        </td>
+                                        <td>
+                                            <input style="width:350px;margin-left: -7px;" id="cnv-driver" class="custom-txt-box form-control" placeholder="Driver Name" type="text" typeahead-on-select="setDriver($item)" ng-model="driver"  typeahead="driver.name for driver in drivers | filter:$viewValue | limitTo:10">
+
+
+                                           <!--  <button  style="height: 33px; margin-top:-33px;width:45px;display:inline-block; float: right; margin-right: 15px;" title="Click to new driver" ng-click="add_driver()"><span class="glyphicon glyphicon-plus-sign"></span></button> -->
+
+                                           
+                                        </td>                                
+                                    </tr>
+                                    <tr>
+                                        <td><label class="custom-font-size control-label" for="cnv-location"> Location </label> </td>
+                                        <td><input style="width:350px;margin-left: -7px;" id="cnv-location"  class="custom-txt-box form-control" ng-model="driverlocation" type="text" placeholder="Driver Location" autocomplete="off"></td>                              
+                                    </tr>
+                                    <tr>
+                                        <td><label class="custom-font-size control-label" for="cnv-chassis-no" title=""> Chassis Number </label></td> 
+                                        <td><input style="width:350px;margin-left: -7px;" id="cnv-chassis-no" class="custom-txt-box form-control" ng-model="chassisno" placeholder="Vehicle Chassis Number" type="text" autocomplete="off"></td>                                   
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+
+                        <td width="50%">
+                        <table style="margin-left:0%;background:#fff;width:100%;text-align:left;" class="table table-responsive">
+                                <tbody>
+                                    <tr>
+                                        <td><label class="custom-font-size control-label" for="cnv-last-odometer"> Last Odometer</label></td>
+                                        <td><input  style="width:350px;" id="cnv-last-odometer" class="custom-txt-box form-control" ng-model="odometer"  placeholder="00.00" type="text" autocomplete="off"> </td>                                
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="custom-font-size control-label" for="cnv-last-acqui" title=""> Acquisition Date  </label></td> 
+                                        <td>
+                                            <input style="width:350px"  id="cnv-last-acqui" class="custom-txt-box form-control" type="text" placeholder="Select Date" ng-model="date" angdatepicker> 
+
+                                        </td>                                 
+                                    </tr>
+                                    <tr>
+                                        <td><label class="custom-font-size control-label" for="cnv-value" title=""> Car Value </label></td>
+                                        <td> <input style="width:350px" id="cnv-value" class="custom-txt-box form-control" type="text"  ng-model="carvalue"  placeholder="00.00" autocomplete="off">  </td>                            
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <table style="margin-left:0%;width:100%;background:#fff;text-align:left;" class="table table-responsive">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+                            <div class="horizontal_heading">Additional Properties</div>
+                        <table style="background:#fff;margin-left:0%;width:100%;text-align:left;" class="table table-responsive">
+                                <tbody>
+                                    <tr>
+                                        <td width="1%"> <label class="custom-font-size control-label" for="cnv-seat-no" >Seats Number</label></td>
+                                        <td width="99%">
+                                            <input  style="width:350px" type="text" placeholder="0" ng-model="seatno" class="custom-txt-box form-control" id="cnv-seat-no" >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="1%"> <label class="custom-font-size control-label" for="cnv-door-no">Doors Number</label> </td>
+                                        <td width="99%"><input  style="width:350px" type="text" placeholder="0" ng-model="doorno" class="custom-txt-box form-control" id="cnv-door-no" > </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="1%" > <label class="custom-font-size control-label" for="cnv-color">Color</label></td>
+                                        <td width="99%"><input  style="width:350px" type="text" ng-model="color" placeholder="Vehicle color" class="custom-txt-box form-control" id="cnv-color" > </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </td>
+
+                        <td width="50%">
+                            <div class="horizontal_heading">Engine Options</div>
+                        <table style="margin-left:0%;background:#fff;width:100%;text-align:left;"  class="table table-responsive">
+                                <tbody>
+                                    <tr>
+                                        <td width="1%"> <label class="custom-font-size control-label" for="cnv-transmission">Transmission</label></td>
+                                        <td width="99%">
+                                            <span> 
+                                                <select id="cnv-transmission" 
+                                                        ng-change="transmissionUpdateOnChange(transmission)" 
+                                                        ng-model="transmission" 
+                                                        class="custom-txt-box form-control ng-valid ng-dirty" 
+                                                        ng-options="transmission.tid as transmission.type for transmission in transmissions">
+                                                    <option value="" selected>Select</option> 
+                                                </select>  
+                                            </span>
+                                        </td>                            
+                                    </tr>
+                                    <tr>
+                                        <td width="1%"><label class="custom-font-size control-label" for="cnv-fuel-type">Fuel Type</label></td>                   
+                                        <td width="99%">
+
+                                            <select id="cnv-fuel-type" 
+                                                    ng-change="fuelUpdateOnChange(fuel)" 
+                                                    ng-model="fuel" 
+                                                    class="custom-txt-box form-control ng-valid ng-dirty" 
+                                                    ng-options="fuel.fid as fuel.type for fuel in fuels">
+                                                <option value="" selected>Select</option> 
+                                            </select> 
+
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td width="1%"><label class="custom-font-size control-label" for="cnv-co-emission">CO<sub>2</sub> Emissions (g/km)</label></td>       
+                                        <td width="99%">
+                                            <input type="text" placeholder="00.00" ng-model="cotwo" class="custom-txt-box form-control" id="cnv-co-emission">                                    
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="1%"> <label class="custom-font-size control-label" for="cnv-hp">Horsepower</label></td>
+                                        <td width="99%">
+
+                                            <input type="text" placeholder="0" ng-model="horsepower" class="custom-txt-box form-control" id="cnv-horsepower">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="1%"><label class="custom-font-size control-label" for="cnv-hp-tax">Horsepower Taxation</label></td>
+                                        <td width="99%"><input class="custom-txt-box form-control" placeholder="00.00" ng-model="hptaxation" type="text" id="cnv-hp-tax"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="1%"><label class="custom-font-size control-label" for="cnv-power">Power <span>(Kw)</span></label></td>
+                                        <td width="99%"><input class="custom-txt-box form-control" placeholder="00.00" ng-model="power" type="text" id="cnv-power"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok-circle"></span> Save</button>
+                <button type="button" ng-click="cancelAddNewVehicles()" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Discard</button>
+            </div>  
+        </form>
+
+            <div ng-if="id">
+               <!--  <div class="action-pane">  </div> -->
+            </div>
+
+      </div>
+
+    </div>
+  
+</div>
+
+
+
+
