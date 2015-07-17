@@ -302,7 +302,7 @@ if($orders_flag == 1)
 		echo "
 			<td style='width:4%;' class='checkbox_td' id='checkboxtd_$row_counter'>
 				<input type='hidden' id='orderid_hidden_$row_counter' value='$orders_details_array_inside_foreach'>
-				<input type='checkbox' class='print_ch checkbox' id='printch_$orders_details_array_inside_foreach'>
+				<input type='checkbox' class='print_ch checkbox' id='printch_".$orders_details_array_inside_foreach."_".$row_counter."'>
 			</td>";
 
 
@@ -520,6 +520,9 @@ if($orders_flag == 1)
 		$row_counter++;
 	}
 	echo "</table>";
+
+
+	echo "<input type='button' id='multiple_shipping_button' value='Ship Multiple Orders' class='buttons' data-fancybox-type='iframe' href=''>";
 }
 else
 {

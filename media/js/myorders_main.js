@@ -442,7 +442,7 @@ $(document).ready(function(){
 
 
 
-
+/*
 $(document).ready(function(){
 	$(document).on('click', '.varun', function(){
 		var button_id = $(this).attr('id');
@@ -483,7 +483,7 @@ $(document).ready(function(){
 						{
 							if(message == "1")
 							{
-								/* THIS CODE RECORDS THIS OPERATION */
+								/* THIS CODE RECORDS THIS OPERATION *
 								$.ajax({
 									type:"POST",
 									url:"vp_recordoperations.php",
@@ -493,10 +493,10 @@ $(document).ready(function(){
 										comment_type:"2"
 									}
 								});
-								/* THIS CODE RECORDS THIS OPERATION */
+								/* THIS CODE RECORDS THIS OPERATION *
 
 
-								/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+								/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS *
 								$.ajax({
 									type:"POST",
 									url:"vp_recordnotifications.php",
@@ -508,7 +508,7 @@ $(document).ready(function(){
 										vendor_id:<?php echo $vendor_id; ?>
 									}
 								});
-								/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+								/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS *
 
 
 								$("#activity_b_"+starter[2]).val("Ship Order");
@@ -588,7 +588,7 @@ $(document).ready(function(){
 								{
 									if(message == "2")
 									{
-										/* THIS CODE RECORDS THIS OPERATION */
+										/* THIS CODE RECORDS THIS OPERATION *
 										$.ajax({
 											type:"POST",
 											url:"vp_recordoperations.php",
@@ -600,7 +600,7 @@ $(document).ready(function(){
 										});
 										/* THIS CODE RECORDS THIS OPERATION */
 
-										/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+										/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS *
 										$.ajax({
 											type:"POST",
 											url:"vp_recordnotifications.php",
@@ -612,7 +612,7 @@ $(document).ready(function(){
 												vendor_id:<?php echo $vendor_id; ?>
 											}
 										});
-										/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+										/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS *
 
 
 										$("#activity_b_"+starter[2]).val("Order Delivered");
@@ -692,7 +692,7 @@ $(document).ready(function(){
 										{
 											if(message == "3")
 											{
-												/* THIS CODE RECORDS THIS OPERATION */
+												/* THIS CODE RECORDS THIS OPERATION *
 												$.ajax({
 													type:"POST",
 													url:"vp_recordoperations.php",
@@ -702,9 +702,9 @@ $(document).ready(function(){
 														comment_type:"4"
 													}
 												});
-												/* THIS CODE RECORDS THIS OPERATION */
+												/* THIS CODE RECORDS THIS OPERATION *
 
-												/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+												/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS *
 												$.ajax({
 													type:"POST",
 													url:"vp_recordnotifications.php",
@@ -716,7 +716,7 @@ $(document).ready(function(){
 														vendor_id:<?php echo $vendor_id; ?>
 													}
 												});
-												/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+												/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS *
 												$("#activity_b_"+starter[2]).hide();
 											}
 											else
@@ -740,3 +740,4 @@ $(document).ready(function(){
 		}
 	});
 });
+*/

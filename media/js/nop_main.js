@@ -408,22 +408,6 @@ if(this_page_url.indexOf("nop_main.php") >= 0)
 			if(selected_vendor != "")
 			{
 				created_order_id = $("#created_order_id_hidden").val();
-				
-				/*
-				$.ajax({
-					type:"POST",
-					url:"nop_fetchemaildetails.php",
-					data:
-					{
-						mode:"vendornamefromid",
-						selected_vendor:selected_vendor
-					},
-					success:function(message)
-					{
-						vendorName = message;
-					}
-				});
-				*/
 				vendorName = $("#forward_order_dd option:selected").text();
 
 
@@ -447,7 +431,7 @@ if(this_page_url.indexOf("nop_main.php") >= 0)
 				}
 
 				$.fancybox({
-					'href'              : 'nop_emailContent.php?order_id='+created_order_id+'&vendor_shop_id='+selected_vendor,//+'&vendorName='+vendorName+'&productDesc='+product_description+'&specialInst='+special_instructions+'&dilType'+delivery_type+'&productType=',
+					'href'              : 'vp_emailContent.php?order_id='+created_order_id+'&vendor_shop_id='+selected_vendor,//+'&vendorName='+vendorName+'&productDesc='+product_description+'&specialInst='+special_instructions+'&dilType'+delivery_type+'&productType=',
 					'width'             : '70%',
 					'height'            : '70%',
 					'autoScale'         : false,
@@ -457,32 +441,9 @@ if(this_page_url.indexOf("nop_main.php") >= 0)
 
 					afterClose: function()
 					{
-						alert("pop");
+						$("#forward_order_b").attr("disabled", "disabled");
 					}
 				});
-
-
-/*
-				$.fancybox({
-					'href'              : 'nop_SendEmail.php?orderId='+created_order_id+'&vendorName='+vendorName+'&productDesc='+product_description+'&specialInst='+special_instructions+'&dilType'+delivery_type+'&productType=',
-					'width'             : '70%',
-					'height'            : '70%',
-					'autoScale'         : false,
-					'transitionIn'      : 'none',
-					'transitionOut'     : 'none',
-					'type'              : 'iframe',
-
-					afterClose: function()
-					{
-						alert("pop");
-					}
-				});
-*/
-				/*
-				$("#forward_form").html("");
-				$("#forward_form").append("<input type='hidden' name='orderId' value='"+created_order_id+"'><input type='hidden' name='vendorName' value='"+vendorName+"'><input type='hidden' name='productDesc' value='"+product_description+"'><input type='hidden' name='specialInst' value='"+special_instructions+"'><input type='hidden' name='dilType' value='"+delivery_type+"'><input type='hidden' name='productType' value=''>");
-				$("#forward_form").submit();
-				*/
 			}
 			else
 			{

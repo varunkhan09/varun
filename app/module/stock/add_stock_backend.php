@@ -1,7 +1,15 @@
 <?php
 	include $_SERVER['DOCUMENT_ROOT']."/global_variables.php";
-	//include "/var/www/varun/global_variables.php";
 	include $base_path_folder."/app/etc/dbconfig.php";
+
+	mysql_select_db($vendorshop_database);
+	$item_id_to_name_mapper = array();
+	$query = "select entity_id, item_name from pos_item_entity";
+	$result = mysql_query($query);
+	while($row = mysql_fetch_assoc($result))
+	{
+		$item_id_to_name_mapper[$row['entity_id']] = $row['item_name'];
+	}
 
 	$mode = $_REQUEST['mode'];
 
@@ -181,7 +189,53 @@
 					}
 					else
 					{
+						if($mode == "load_date_items_details")
+						{
+							$date_to_load_stock = $_REQUEST['date'];
+							$date_to_load_stock_unix = strtotime($date_to_load_stock);
+							$date_to_load_stock_final = date("Y-m-d", $date_to_load_stock_unix);
+							$date_to_load_stock_view = date("jS F, Y", $date_to_load_stock_unix);
 
+							$query = "select item_id, item_unitscale_quantity from pos_stock_addition_entity where shop_id=$shop_id and created_at like '$date_to_load_stock_final%'";
+							$result = mysql_query($query);
+							if(mysql_num_rows($result) != 0)
+							{
+								$items_details_array = array();
+								$original_add_stock_serialized = "";
+								while($row = mysql_fetch_assoc($result))
+								{
+									$temp_item_id = $row['item_id'];
+									$temp_item_unitscale_quantity = $row['item_unitscale_quantity'];
+									$items_details_array['addition'][$temp_item_id] += $temp_item_unitscale_quantity;
+								}
+								$added_items_details = array_keys($items_details_array['addition']);
+								echo "<form id='edited_added_item_form' method='POST'>";
+								echo "<table class='table table-bordered text-center'>";
+								echo "<tr class='stock_report_heading_tr'><td colspan='2'>Stock Added on $date_to_load_stock_view</td></tr>";
+								foreach($added_items_details as $each_added_item_id)
+								{
+									echo "<tr>";
+									echo "<td class='table_cell_1'>".$item_id_to_name_mapper[$each_added_item_id]."</td>";
+									echo "<td class='table_cell_2'><input type='textbox' name='".$each_added_item_id."' id='".$each_added_item_id."' class='each_item_stock_textbox' value='".$items_details_array['addition'][$each_added_item_id]."'></td>";
+									echo "</tr>";
+
+									$original_add_stock_serialized .= $each_added_item_id."=".$items_details_array['addition'][$each_added_item_id].",";
+								}
+								$original_add_stock_serialized = rtrim($original_add_stock_serialized, ",");
+								echo "</table>";
+								echo "</form>";
+								echo "<input type='button' class='buttons' id='update_add_stock_b' value='Update Stock Details'>";
+?>
+								<script>
+									original_add_stock_serialized = '<?php echo $original_add_stock_serialized; ?>';
+								</script>
+<?php
+							}
+							else
+							{
+								echo "-2|";
+							}
+						}
 					}
 				}
 			}

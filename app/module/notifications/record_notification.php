@@ -214,7 +214,7 @@
 			$rejection_reason = $_REQUEST['rejection_reason'];
 
 			mysql_select_db($vendorshop_database);
-			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id]['name']."</b> has rejected the Order <a target='_blank' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a> on behalf of <b>".$all_shops_array[$shop_id_accepted]['name']."</b> from <b>".$all_shops_array[$shop_id_created]['name']."</b> with reason \'<b>$rejection_reason</b>\'.')";
+			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id]['name']."</b> has rejected the Order <a target=\'_blank\' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a> on behalf of <b>".$all_shops_array[$shop_id_accepted]['name']."</b> from <b>".$all_shops_array[$shop_id_created]['name']."</b> with reason \'<b>$rejection_reason</b>\'.')";
 			$result = mysql_query($query);
 			echo mysql_error();
 			$notification_id = mysql_insert_id();
@@ -249,7 +249,7 @@
 			$shop_id_created = GetShopCreatedId($order_id);
 
 			mysql_select_db($vendorshop_database);
-			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_accepted]['name']."</b> has shipped the Order <a target='_blank' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a> from <b>".$all_shops_array[$shop_id_created]['name']."</b>.')";
+			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_accepted]['name']."</b> has shipped the Order <a target=\'_blank\' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a> from <b>".$all_shops_array[$shop_id_created]['name']."</b>.')";
 			$result = mysql_query($query);
 			echo mysql_error();
 			$notification_id = mysql_insert_id();
@@ -285,7 +285,7 @@
 			$shop_id_created = GetShopCreatedId($order_id);
 
 			mysql_select_db($vendorshop_database);
-			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_accepted]['name']."</b> has delivered the Order <a target='_blank' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a> from <b>".$all_shops_array[$shop_id_created]['name']."</b>.')";
+			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_accepted]['name']."</b> has delivered the Order <a target=\'_blank\' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a> from <b>".$all_shops_array[$shop_id_created]['name']."</b>.')";
 			$result = mysql_query($query);
 			echo mysql_error();
 			$notification_id = mysql_insert_id();
@@ -321,7 +321,7 @@
 			$shop_id_created = $shop_id;
 
 			mysql_select_db($vendorshop_database);
-			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_created]['name']."</b> has cancelled the Order <a target='_blank' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a>.')";
+			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_created]['name']."</b> has cancelled the Order <a target=\'_blank\' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a>.')";
 			$result = mysql_query($query);
 			echo mysql_error();
 			$notification_id = mysql_insert_id();
@@ -356,7 +356,7 @@
 			$shop_id_created = $shop_id;
 
 			mysql_select_db($vendorshop_database);
-			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_created]['name']."</b> has closed the Order <a target='_blank' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a>.')";
+			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_created]['name']."</b> has closed the Order <a target=\'_blank\' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a>.')";
 			$result = mysql_query($query);
 			echo mysql_error();
 			$notification_id = mysql_insert_id();
@@ -392,7 +392,7 @@
 			$comment = $_REQUEST['comment'];
 
 			mysql_select_db($vendorshop_database);
-			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_accepted]['name']."</b> has added a comment \'<b>$comment</b>\' in the Order <a target='_blank' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a> from <b>".$all_shops_array[$shop_id_created]['name']."</b>.')";
+			$query = "insert into pos_notifications (notification) values ('<b>".$all_shops_array[$shop_id_accepted]['name']."</b> has added a comment \'<b>$comment</b>\' in the Order <a target=\'_blank\' href=\'$base_module_path/common/view_order_common.php?orderid=$order_id\'>$order_id</a> from <b>".$all_shops_array[$shop_id_created]['name']."</b>.')";
 			$result = mysql_query($query);
 			echo mysql_error();
 			$notification_id = mysql_insert_id();

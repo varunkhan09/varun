@@ -2,37 +2,12 @@
 	include $_SERVER['DOCUMENT_ROOT']."/global_variables.php";
 	include $base_path_folder."/app/etc/dbconfig.php";
 	include $base_path_folder."/app/etc/mageinclusion.php";
-	require 'googleemail/PHPMailerAutoload.php';
-?>
-	<html>
-	<head>
-		<script src="<?php echo $base_media_js_url; ?>/jquery-latest.min.js"></script>
-	</head>
-	<body>
-<?php
-	mysql_select_db($custom_database);
-	
-	$order_id = $_POST['order_id'];
-	$vendor_shop_id = $_POST['vendor_shop_id'];
 
-	$all_posted_keys = array_keys($_POST);
-	foreach($all_posted_keys as $each_posted_key)
-	{
-		if(strpos($each_posted_key, 'vendor_description_') !== false)
-		{
-			$temp_posted_key = $each_posted_key;
-			$temp_posted_key_array = explode("_", $temp_posted_key);
-			$temp_product_id = $temp_posted_key_array[2];
-			$temp_product_v_description = $_POST['vendor_description_'.$temp_product_id];
-
-			$query_update_vendor_description = "update panelorderdetails set productvdescription='$temp_product_v_description' where orderid=$order_id and productid=$temp_product_id";
-			//echo $query_update_vendor_description."<br>";
-			mysql_query($query_update_vendor_description);
-			//echo mysql_error();
-		}
-	}
+	$order_id = $_REQUEST['order_id'];
+	$vendor_shop_id = $_REQUEST['vendor_shop_id'];
 
 	$query_main = "select * from panelorderdetails where orderid=$order_id and shop_id_created=$shop_id";
+	mysql_select_db($custom_database);
 	$result_main = mysql_query($query_main);
 	mysql_select_db($vendorshop_database);
 	$date_of_delivery = "";
@@ -67,7 +42,7 @@
 			$query_inner = "select a.product_id, a.product_quantity, a.item_id, a.item_quantity, b.price from pos_order_items_entity a inner join pos_vendor_item_price b on a.item_id = b.product_id where a.order_id = ".$order_id." and a.product_id = ".$temp_product_id." and b.self_shop_id = ".$shop_id." and b.vendor_shop_id = ".$vendor_shop_id;
 			//echo $query_inner."<br>";
 			$result_inner = mysql_query($query_inner);
-			//echo mysql_error();
+			echo mysql_error();
 			while($row_inner = mysql_fetch_assoc($result_inner))
 			{
 				$temp_inner_product_id = $row_inner['product_id'];
@@ -84,7 +59,7 @@
 			$query_inner = "select a.product_id, a.item_id, a.item_quantity, b.price from pos_products_item_details a inner join pos_vendor_item_price b on a.item_id = b.product_id where a.product_id = ".$temp_product_id." and b.self_shop_id = $shop_id and b.vendor_shop_id = ".$vendor_shop_id;
 			//echo $query_inner."<br>";
 			$result_inner = mysql_query($query_inner);
-			//echo mysql_error();
+			echo mysql_error();
 			while($row_inner = mysql_fetch_assoc($result_inner))
 			{
 				$temp_inner_product_id = $row_inner['product_id'];
@@ -97,7 +72,6 @@
 			}
 		}
 	}
-
 
 	$date_of_delivery_unix = strtotime($date_of_delivery);
 	$date_of_delivery_final = date("jS F, Y", $date_of_delivery_unix);
@@ -112,7 +86,6 @@
 		$inner_query = "select attribute_id from pos_attributes where attribute_code = 'midnight_delivery_charge'";
 	}
 	$inner_result = mysql_query($inner_query);
-	//echo mysql_error();
 	$inner_row = mysql_fetch_assoc($inner_result);
 	$temp_delivery_charge_attribute_id = $inner_row['attribute_id'];
 	$inner_query = "select value from pos_shop_entity_decimal where attribute_id=$temp_delivery_charge_attribute_id and entity_id=$vendor_shop_id";
@@ -270,12 +243,13 @@
 
 
 
+	echo "<form method='POST' action='vp_emailContent2.php'>";
 
 		$body .= "<div style='float:left; display:inline; width:800px; margin:0px; margin-top:40px;'>";
 			$body .= "<center>";
 			$body .= "<label style='font-size:22px;'>Product Details</label><br>";
-			$body .= "<table style='width:98%; border:2px solid white; text-align:center; background-color:white;'>";
-				$body .= "<tr style='font-weight:bold;'>";
+			$body .= "<table cellspacing='0' style='width:98%; border:2px solid #949494; text-align:center; background-color:white;'>";
+				$body .= "<tr style='font-weight:bold; font-size:22px; background-color:#C2C2C2;'>";
 					$body .= "<td>S. No.</td>";
 					$body .= "<td>Product</td>";
 					$body .= "<td>Product Description</td>";
@@ -290,28 +264,23 @@
 				{
 					$product_counter++;
 					$body .= "<tr>";
-						$body .= "<td>$product_counter</td>";
-						$body .= "<td>".$product_details_array[$each_product_id]['name']."<br><img src='".$product_details_array[$each_product_id]['image']."' style='height:150px; width:150px;'></td>";
-						$body .= "<td>".$product_details_array[$each_product_id]['vendor_description']."</td>";
-						$body .= "<td>".$product_details_array[$each_product_id]['quantity']."</td>";
-						$body .= "<td>₹ ".number_format($product_price_array[$each_product_id]['single_price'])."</td>";
-						$body .= "<td>₹ ".number_format($product_price_array[$each_product_id]['total_price'])."</td>";
+						$body .= "<td style='border:1px solid #949494;'>$product_counter</td>";
+						$body .= "<td style='border:1px solid #949494;'>".$product_details_array[$each_product_id]['name']."<br><img src='".$product_details_array[$each_product_id]['image']."' style='height:150px; width:150px;'></td>";
+						$body .= "<td style='border:1px solid #949494;'><textarea name='vendor_description_$each_product_id'>".$product_details_array[$each_product_id]['vendor_description']."</textarea></td>";
+						$body .= "<td style='border:1px solid #949494;'>".$product_details_array[$each_product_id]['quantity']."</td>";
+						$body .= "<td style='border:1px solid #949494;'>₹ ".number_format($product_price_array[$each_product_id]['single_price'])."</td>";
+						$body .= "<td style='border:1px solid #949494;'>₹ ".number_format($product_price_array[$each_product_id]['total_price'])."</td>";
 						$merchandise_total += $product_price_array[$each_product_id]['total_price'];
 					$body .= "</tr>";
 				}
 
 				$body .= "<tr>";
-					$body .= "<td></td>";
-					$body .= "<td></td>";
-					$body .= "<td></td>";
-					$body .= "<td></td>";
-					$body .= "<td style='font-weight:bold;'>Merchandise Total</td>";
-					$body .= "<td>₹ ".number_format($merchandise_total)."</td>";
+					$body .= "<td colspan='5' style='font-weight:bold; text-align:right; border:1px solid #949494; padding:5px;'>Merchandise Total</td>";
+					$body .= "<td style='border:1px solid #949494; padding:5px;'>₹ ".number_format($merchandise_total)."</td>";
 				$body .= "</tr>";
 			$body .= "</table>";
 			$body .= "</center>";
 		$body .= "</div>";
-
 
 
 
@@ -346,61 +315,20 @@
 
 
 
-	$subject = "Acknowledge this Order";
+	echo $body;
+	echo "<br><br><br>";
+		echo "<input type='hidden' name='order_id' value='$order_id'>";
+		echo "<input type='hidden' name='vendor_shop_id' value='$vendor_shop_id'>";
+		echo "<input type='submit' class='buttons' value='Send Email'>";
+	echo "</form>";
+	echo "<br><br>";
+	die();
 
 
 
 
 
-	$mail = new PHPMailer;
-	$mail->isSMTP();
-	$mail->Host = 'smtp.gmail.com';
-	$mail->Username = 'varunk@flaberry.com';
-	$mail->Password = '0151Nanotech%';
-	$mail->SMTPAuth   = true;
-	$mail->SMTPSecure = 'tls';
-	$mail->Port = 587;
-	$mail->setFrom('varunk@flaberry.com', 'Team Flaberry');
-	$mail->addAddress('varunk@flaberry.com');
-	$mail->WordWrap = 2000;
-	$mail->isHTML(true);
-	$mail->Subject = $subject;
-	$mail->Body = $body;
-	$mail->msgHTML($body);
 
-
-	$mail->Headers = "From: varunk@flaberry.com \r\n";
-	$mail->Headers .= "Reply-To: varunk@flaberry.com \r\n";
-	$mail->Headers .= "Return-Path: varunk@flaberry.com\r\n";
-	$mail->Headers .= "X-Mailer: PHP \r\n";
-
-	echo "<br><br><br><br>";
-	if($mail->send())
-	{
-		echo "<center>Mail has been sent.</center>";
-?>
-		<script>
-			/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
-				$.ajax({
-					type:"POST",
-					url:"<?php echo $base_module_path; ?>/notifications/record_notification.php",
-					data:
-					{
-						notf_type:'order_forwarded',
-						shop_id_accepted:'<?php echo $vendor_shop_id; ?>',
-						order_id:'<?php echo $order_id; ?>',
-					}
-				});
-				/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
-		</script>
-<?php
-	}
-	else
-	{
-		echo "Mail sending failed.";
-	}
-
-	echo "<br><br><br><br>";
 
 
 
@@ -454,13 +382,13 @@
 
 
 	$query_verifying = "select orderid from vendor_processing where orderid = $order_id";
-	//echo $query_verifying."<br>";
+	echo $query_verifying."<br>";
 	$result_verifying = mysql_query($query_verifying);
-	//echo mysql_error()."<br>";
+	echo mysql_error()."<br>";
 
 	if(mysql_num_rows($result_verifying) == 0)
 	{
-		//echo "It is a new Order to record.<br>";
+		echo "It is a new Order to record.<br>";
 		$query_final = "insert into vendor_processing (orderid, vendor_id, productid, quantity, unitprice, amount, shipping_charges, dod, delivery_type) values ";
 		mysql_select_db($vendorshop_database);
 		while($row = mysql_fetch_assoc($result))
@@ -499,27 +427,27 @@
 
 		$query_final = rtrim($query_final, ", ");
 		$query_final_2 = "update panelorderdetails set vendor_id=$vendor_shop_id where orderid=$order_id";
-		//echo "<hr><hr>";
+		echo "<hr><hr>";
 
-		//echo $query_final."<br><br>".$query_final_2;
+		echo $query_final."<br><br>".$query_final_2;
 		mysql_select_db($custom_database);
 		mysql_query($query_final);
-		//echo "<br><br>";
-		//echo mysql_error();
+		echo "<br><br>";
+		echo mysql_error();
 		mysql_query($query_final_2);
-		//echo "<br><br>";
-		//echo mysql_error();
+		echo "<br><br>";
+		echo mysql_error();
 	}
 	else
 	{
-		//echo "It is a rejected Order to be reassigned.<br>";
+		echo "It is a rejected Order to be reassigned.<br>";
 		
 		$query_final = "update vendor_processing set vendor_id=$vendor_shop_id, state=0 where orderid=$order_id";
-		//echo $query_final."<br>";
+		echo $query_final."<br>";
 		mysql_query($query_final);
 		
 		$query_final_2 = "update panelorderdetails set vendor_id=$vendor_shop_id where orderid=$order_id";
-		//echo $query_final_2;
+		echo $query_final_2;
 		mysql_query($query_final_2);
 
 		mysql_select_db($vendorshop_database);
@@ -550,7 +478,7 @@
 
 		mysql_select_db($custom_database);
 		$query_final = "update vendor_processing set shipping_charges=$temp_delivery_charges where orderid=$order_id";
-		//echo $query_final;
+		echo $query_final;
 		mysql_query($query_final);
 	}
 
@@ -598,12 +526,12 @@
 
 	mysql_select_db($custom_database);
 	$query = "select productid, productsku, productquantity, shop_id_created from panelorderdetails where orderid=$order_id";
-	//echo $query."<br><br>";
+	echo $query."<br><br>";
 	$result = mysql_query($query);
 	while($row = mysql_fetch_assoc($result))
 	{
 		//var_dump($row);
-		//echo "<hr>";
+		echo "<hr>";
 		$temp_shop_id_created = $row['shop_id_created'];
 		$temp_inner_product_id = $row['productid'];
 		$temp_inner_product_quantity = $row['productquantity'];
@@ -612,17 +540,17 @@
 		mysql_select_db($vendorshop_database);
 		if(strpos($temp_inner_product_sku, 'custom:') !== false)
 		{
-			//echo "$temp_inner_product_sku is a custom product.<br>";
+			echo "$temp_inner_product_sku is a custom product.<br>";
 			$query_inner = "select a.product_id, a.product_quantity, a.item_id, a.item_quantity, b.price from pos_order_items_entity a inner join pos_vendor_item_price b on a.item_id = b.product_id where a.order_id = ".$order_id." and a.product_id = ".$temp_inner_product_id." and b.self_shop_id = ".$shop_id." and b.vendor_shop_id = ".$vendor_shop_id;
-			//echo $query_inner."<br>";
+			echo $query_inner."<br>";
 			$result_inner = mysql_query($query_inner);
-			//echo mysql_error();
+			echo mysql_error();
 
 
 			$product_price_array = array();
 			while($row_inner = mysql_fetch_assoc($result_inner))
 			{
-				//echo "<br><br>";
+				echo "<br><br>";
 				//var_dump($row_inner);
 				//echo "<br><br>";
 
@@ -632,11 +560,11 @@
 				$temp_inner_item_quantity = $row_inner['item_quantity'];
 				$temp_inner_item_price = $row_inner['price'];
 
-				//echo "<br>Product ID : $temp_inner_product_id<br>";
-				//echo "Product Quantity : $temp_inner_product_quantity<br>";
-				//echo "Item ID : $temp_inner_item_id<br>";
-				//echo "Item Quantity : $temp_inner_item_quantity<br>";
-				//echo "Item Item Price : $temp_inner_item_price<br>";
+				echo "<br>Product ID : $temp_inner_product_id<br>";
+				echo "Product Quantity : $temp_inner_product_quantity<br>";
+				echo "Item ID : $temp_inner_item_id<br>";
+				echo "Item Quantity : $temp_inner_item_quantity<br>";
+				echo "Item Item Price : $temp_inner_item_price<br>";
 
 				$product_price_array[$temp_inner_product_id]['price'] += $temp_inner_item_quantity*$temp_inner_item_price*$temp_inner_product_quantity;
 
@@ -647,45 +575,45 @@
 			}
 
 			$all_products_array = array_keys($product_price_array);
-			//echo "<br><br>Final Queries for Product $temp_inner_product_id are : <br>";
+			echo "<br><br>Final Queries for Product $temp_inner_product_id are : <br>";
 			mysql_select_db($custom_database);
 			foreach($all_products_array as $each_product)
 			{
 				$query_inner = "update vendor_processing set vendor_price = ".$product_price_array[$each_product]['price']." where orderid=$order_id and productid = $each_product";
-				//echo $query_inner."<br>";
+				echo $query_inner."<br>";
 				mysql_query($query_inner);
 				$query_inner = "update panelorderdetails set vendor_price = ".$product_price_array[$each_product]['price']." where orderid=$order_id and productid = $each_product";
-				//echo $query_inner."<br><br>";
+				echo $query_inner."<br><br>";
 				mysql_query($query_inner);
 			}
 		}
 		else
 		{
-			//echo "$temp_inner_product_sku is a normal product.<br>";
+			echo "$temp_inner_product_sku is a normal product.<br>";
 
 			$query_inner = "select a.product_id, a.item_id, a.item_quantity, b.price from pos_products_item_details a inner join pos_vendor_item_price b on a.item_id = b.product_id where a.product_id = ".$temp_inner_product_id." and b.self_shop_id = $shop_id and b.vendor_shop_id = ".$vendor_shop_id;
-			//echo $query_inner."<br>";
+			echo $query_inner."<br>";
 			$result_inner = mysql_query($query_inner);
-			//echo mysql_error();
+			echo mysql_error();
 
 
 			$product_price_array = array();
 			while($row_inner = mysql_fetch_assoc($result_inner))
 			{
-				//echo "<br><br>";
-				//var_dump($row_inner);
-				//echo "<br><br>";
+				echo "<br><br>";
+				var_dump($row_inner);
+				echo "<br><br>";
 
 				$temp_inner_product_id = $row_inner['product_id'];
 				$temp_inner_item_id = $row_inner['item_id'];
 				$temp_inner_item_quantity = $row_inner['item_quantity'];
 				$temp_inner_item_price = $row_inner['price'];
 
-				//echo "<br>Product ID : $temp_inner_product_id<br>";
-				//echo "Product Quantity : $temp_inner_product_quantity<br>";
-				//echo "Item ID : $temp_inner_item_id<br>";
-				//echo "Item Quantity : $temp_inner_item_quantity<br>";
-				//echo "Item Item Price : $temp_inner_item_price<br>";
+				echo "<br>Product ID : $temp_inner_product_id<br>";
+				echo "Product Quantity : $temp_inner_product_quantity<br>";
+				echo "Item ID : $temp_inner_item_id<br>";
+				echo "Item Quantity : $temp_inner_item_quantity<br>";
+				echo "Item Item Price : $temp_inner_item_price<br>";
 
 				$product_price_array[$temp_inner_product_id]['price'] += $temp_inner_item_quantity*$temp_inner_item_price*$temp_inner_product_quantity;
 
@@ -696,19 +624,23 @@
 			}
 
 			$all_products_array = array_keys($product_price_array);
-			//echo "<br><br>Final Queries for Product $temp_inner_product_id are : <br>";
+			echo "<br><br>Final Queries for Product $temp_inner_product_id are : <br>";
 			mysql_select_db($custom_database);
 			foreach($all_products_array as $each_product)
 			{
 				$query_inner = "update vendor_processing set vendor_price = ".$product_price_array[$each_product]['price']." where orderid=$order_id and productid = $each_product";
-				//echo $query_inner."<br>";
+				echo $query_inner."<br>";
 				mysql_query($query_inner);
 				$query_inner = "update panelorderdetails set vendor_price = ".$product_price_array[$each_product]['price']." where orderid=$order_id and productid = $each_product";
-				//echo $query_inner."<br><br>";
+				echo $query_inner."<br><br>";
 				mysql_query($query_inner);
 			}
 		}
 	}
+
+
+
+
 
 
 
@@ -1160,5 +1092,3 @@ function fetchVoiceMessageFlag($orderId)
 	}
 */
 ?>
-</body>
-</html>

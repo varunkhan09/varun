@@ -5,9 +5,11 @@
 
 	<div class="row add_stock_page_content">
 		<div class="container-fluid text-center">
-			<!--<input type="textbox" id="input_date_t" class="form-control datepicker" value="" style="height:27px;"><span id="calender_icon" class="input-group-addon" style="display:inline; font-size:12px;"><i class="glyphicon glyphicon-th"></i></span>-->
 			<input type="textbox" id="input_date_t" style="height:31px;" class="datepicker" value=""><span id="calender_icon" class="input-group-addon" style="display:inline; font-size:13px;"><i class="glyphicon glyphicon-th"></i></span>
+			<input type="button" id="load_wastage_stock_details_b" class="buttons" value="Load Stock Details">
 		</div>
+
+		<div id="load_item_details_div" class="container-fluid text-center content_table_division"></div>
 
 
 		<div class="container-fluid text-center content_table_division">
@@ -27,12 +29,9 @@
 						</td>
 						
 						<td>
-							<!--<input type="textbox" class="add_stock_product_type_textbox" id="item_name_t">-->
 							<input type="text" id="item_name_t2_1" data-provide="typeahead" class="item_name_t_class">
-							<!--<select class="form-control item_name_dd_class" id="item_name_dd_1"></select>-->
-							<!--<select id="item_name_dd_1" class="selectpicker item_name_dd_class" data-live-search="true" title="Please select an option ..."></select>-->
 						</td>
-
+						
 						<td>
 							<input type="textbox" id="item_quantity_1">
 						</td>

@@ -2,6 +2,14 @@
 	include $_SERVER['DOCUMENT_ROOT']."/global_variables.php";
 	include $base_path_folder."/app/etc/dbconfig.php";
 
+	$item_id_to_name_mapper = array();
+	$query = "select entity_id, item_name from pos_item_entity";
+	$result = mysql_query($query);
+	while($row = mysql_fetch_assoc($result))
+	{
+		$item_id_to_name_mapper[$row['entity_id']] = $row['item_name'];
+	}
+
 	$mode = $_REQUEST['mode'];
 
 	if($mode == "load_all_products")
@@ -119,7 +127,77 @@
 				}
 				else
 				{
-					
+					if($mode == "load_date_items_details")
+					{
+						$date_to_load_stock = $_REQUEST['date'];
+						$date_to_load_stock_unix = strtotime($date_to_load_stock);
+						$date_to_load_stock_final = date("Y-m-d", $date_to_load_stock_unix);
+						$date_to_load_stock_view = date("jS F, Y", $date_to_load_stock_unix);
+
+						$query = "select order_id, item_id, item_quantity from pos_stock_deduced_entity where shop_id=$shop_id and created_at like '$date_to_load_stock_final%'";
+						$result = mysql_query($query);
+						if(mysql_num_rows($result) != 0)
+						{
+							$items_details_array = array();
+							$original_deduce_stock_serialized = "";
+
+							while($row = mysql_fetch_assoc($result))
+							{
+								$temp_order_id = $row['order_id'];
+								$temp_item_id = $row['item_id'];
+								$temp_item_unitscale_quantity = $row['item_quantity'];
+								$items_details_array['deduced'][$temp_order_id][$temp_item_id] += $temp_item_unitscale_quantity;
+							}
+							$deduced_items_details = array_keys($items_details_array['deduced']);
+							echo "<form id='edited_deduced_item_form' method='POST'>";
+							echo "<table class='table table-bordered'>";
+							echo "<tr class='stock_report_heading_tr'><td colspan='2'>Stock Deduced on $date_to_load_stock_view</td></tr>";
+						
+							$counter = 1;
+							foreach($deduced_items_details as $each_deduced_order_id)
+							{
+								echo "<tr data-toggle='collapse' href='#collapseExample".$counter."' class='collapsable_row' aria-expanded='false' aria-controls='collapseExample".$counter."'>";
+									echo "<td>Order Number $each_deduced_order_id</td>";
+								echo "</tr>";
+
+
+								echo "<tr class='collapse' id='collapseExample".$counter."'>";
+									echo "<td colspan='2'>";
+										echo "<table class='table table-bordered inner_table'>";
+										$all_items_in_this_order = array_keys($items_details_array['deduced'][$each_deduced_order_id]);
+										foreach($all_items_in_this_order as $each_item_in_this_order)
+										{
+											echo "<tr>";
+												echo "<td class='table_cell_1'>".$item_id_to_name_mapper[$each_item_in_this_order]."</td>";
+												echo "<td class='table_cell_2'><input type='textbox' name='".$each_deduced_order_id."_".$each_item_in_this_order."' id='".$each_deduced_order_id."_".$each_item_in_this_order."' class='each_item_stock_textbox' value='".$items_details_array['deduced'][$each_deduced_order_id][$each_item_in_this_order]."'></td>";
+											echo "</tr>";
+											$original_deduce_stock_serialized .= $each_deduced_order_id."_".$each_item_in_this_order."=".$items_details_array['deduced'][$each_deduced_order_id][$each_item_in_this_order].",";
+										}
+										echo "</table>";
+									echo "</td>";
+								echo "</tr>";
+								$counter++;
+							}
+							$original_deduce_stock_serialized = rtrim($original_deduce_stock_serialized, ",");
+
+							echo "</table>";
+							echo "</form>";
+							echo "<input type='button' class='buttons' id='update_deduce_stock_b' value='Update Stock Details'>";
+?>
+								<script>
+									original_deduce_stock_serialized = '<?php echo $original_deduce_stock_serialized; ?>';
+								</script>
+<?php
+						}
+						else
+						{
+							echo "-2|";
+						}
+					}
+					else
+					{
+
+					}
 				}
 			}
 		}

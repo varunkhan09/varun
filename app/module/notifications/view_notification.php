@@ -1,10 +1,14 @@
 <div class="blue_notification_bar" id="notification_board">
-	<div id="notification_label" style="text-align:center; overflow:auto;"><label style="font-family: Open Sans; color:white; font-size:16px;" id="notification_label2">Notifications</label></div>
+	<div id="notification_label" style="text-align:center; overflow:auto;">
+		<label style="font-family: Open Sans; color:white; font-size:16px;" id="notification_label2">
+			Notifications
+		</label>
+	</div>
+	
 	<div id="notifications_div_main" style="background-color:white; height:270px; width:898px; border-right:2px solid #009ACD; overflow:auto;">
 		<div id="notifications_div" style="width:100%; height:240px; overflow:auto;"></div>
 		<div id="load_more_div" style="width:100%; height:auto; overflow:auto; text-align:center;"><input type="button" id="load_more_b" class="load_more_c" value="Load More"></div>
 	</div>
-
 </div>
 
 <style>
@@ -18,6 +22,8 @@
 		left:0px;
 		background-color:#009ACD;
 		border-top-right-radius: 20;
+		-webkit-border-top-right-radius: 20;
+		-moz-border-top-right-radius: 20;
 	}
 
 	.red_notification_bar
@@ -29,6 +35,8 @@
 		left:0px;
 		background-color:#BB1515;
 		border-top-right-radius: 20;
+		-webkit-border-top-right-radius: 20;
+		-moz-border-top-right-radius: 20;
 	}
 
 	.each_notification
@@ -79,18 +87,22 @@
 		cursor:pointer;
 		background-color:#00688B;
 		border-top-right-radius: 20;
+		-moz-border-top-right-radius: 20;
+		-webkit-border-top-right-radius: 20;
 	}
 
 	.load_more_c
 	{
 		margin-left: 2%;
 		border-radius: 6px;
+		-moz-border-radius: 6px;
+		-webkit-border-radius: 6px;
 		background-color: #00688B;
 		color: white;
 		font-weight: bold;
 		height: 30px;
 		border: 0;
-		font-family: 'Raleway';
+		font-family:'Raleway';
 	}
 
 	.load_more_c:hover
@@ -120,7 +132,6 @@ var notifications_id_array = [];
 			{
 				$("#notification_board").animate({height:'300px'}, 200);
 				$("#notification_board").animate({width:'900px'}, 200);
-				//$("#notification_control").animate({bottom:'300px'}, 200);
 			}
 			else
 			{
@@ -133,17 +144,7 @@ var notifications_id_array = [];
 					content = content.replace(/ \(new\)/g, "");
 					content = content.replace(/each_new_notification/g, "each_notification");
 					$("#notifications_div").html(content);
-
-
-					//$("#notification_control").animate({bottom:'100px'}, 200);
 				}
-				/*
-				if(height == "0px")
-				{
-					$("#notification_board").animate({height:'100px'}, 200);
-					$("#notification_control").animate({bottom:'100px'}, 200);
-				}
-				*/
 			}
 
 			var parsed_into_json = JSON.stringify(notifications_id_array);
@@ -179,27 +180,6 @@ var notifications_id_array = [];
 			});
 		});
 	});
-/*
-	$("document").ready(function(){
-		$("#notification_board, #notification_label, #notification_label2").click(function(){
-			var height = $("#notification_board").css("height");
-
-			if(height == "300px")
-			{
-				$("#notification_board").animate({height:'32px'}, 200);
-				//$("#notification_control").animate({bottom:'100px'}, 200);
-			}
-			else
-			{
-				if(height == "100px")
-				{
-					$("#notification_board").animate({height:'0px'}, 200);
-					$("#notification_control").animate({bottom:'0px'}, 200);
-				}
-			}
-		});
-	});
-*/
 
 	$(document).ready(function(){
 		$.ajax({
@@ -218,7 +198,6 @@ var notifications_id_array = [];
 				if(notifications_array != undefined)
 				{
 					var x=0;
-					//loaded_count = notifications_array.length;
 					for(x=notifications_array.length-1; x>=0; x--)
 					{
 						$("#notifications_div").prepend("<div class='each_notification'>"+notifications_array[x]+"</div>");
@@ -292,16 +271,19 @@ var notifications_id_array = [];
 
 					if(notifications_array != undefined)
 					{
-						if(limit == loaded_count){
+						if(limit == loaded_count)		//This is first time loading by Automated Timer after page loads...
+						{
 							loaded_count = 0;
 							new_notification_count = 0;
 							new_notification = notifications_array.length;
 						}
-						else{
-							new_notification = notifications_array.length - loaded_count ;
+						else
+						{
+							new_notification = notifications_array.length-loaded_count;
 							new_notification_count = new_notification;
 						}
-						loaded_count+= new_notification;
+
+						loaded_count += new_notification;	//It is always increasing...and tells how many notifications have been loaded...
 
 						if(notifications_array.length != 0)
 						{
@@ -311,10 +293,10 @@ var notifications_id_array = [];
 							$("#notification_board").removeClass("blue_notification_bar");
 
 							var x=0;
-							//for(x=0;x<notifications_array.length-new_notification_count;x++){
-							//for(x=notifications_array.length-1; x>=notifications_array.length-new_notification_count-1; x--){
-							for(x=0;x<notifications_array.length-new_notification_count;x++){
-							
+							//for(x=0;x<notifications_array.length-new_notification_count;x++)
+							//for(x=notifications_array.length-1; x>=notifications_array.length-new_notification_count-1; x--)
+							for(x=0;x<notifications_array.length-new_notification_count;x++)
+							{
 								$("#notifications_div").prepend("<div class='each_new_notification'>"+notifications_array[x]+" (new)</div>");
 							}
 						}

@@ -112,7 +112,7 @@ if(!isset($_REQUEST['flag']))
 			<select name='delivery_device' id='delivery_device'>
 			<option value=''>Select</option>
 			<?php
-				$query = "select name, device_id from pos_shop_order_track where shop_id = $shop_id";
+				$query = "select name, device_id from pos_shop_order_track where shop_id = $shop_id and is_active=1";
 				$result = mysql_query($query);
 				while($row = mysql_fetch_assoc($result))
 				{
@@ -172,25 +172,25 @@ else
 			$row_user_created = mysql_fetch_assoc($result_user_created);
 			$adhoc_delivery_boy_role_id = $row_user_created['role_id'];
 			$query_user_created = "insert into pos_user_entity (role_id, shop_id, firstname, lastname, phone_number) values ($adhoc_delivery_boy_role_id, $shop_id, '".$deliveryboy_name_array[0]."', '".$deliveryboy_name_array[1]."', '$deliveryboy_contact')";
-			echo $query_user_created."<br><br>";
+			//echo $query_user_created."<br><br>";
 			mysql_query($query_user_created);
 			$query_user_created = "select entity_id from pos_user_entity where shop_id=$shop_id and firstname='".$deliveryboy_name_array[0]."' and lastname='".$deliveryboy_name_array[1]."'";
 			$result_user_created = mysql_query($query_user_created);
 			$row_user_created = mysql_fetch_assoc($result_user_created);
 			$delivery_boy_id = $row_user_created['entity_id'];
-			echo mysql_error()."<br><br>";
+			//echo mysql_error()."<br><br>";
 			
 
 			mysql_select_db($custom_database);
 			$query = "insert into delivery_boys_info (name, phone_no1, phone_no2, rider_type) values ('$delivery_boy_name', '$deliveryboy_contact', '', 1)";
-			echo $query."<br><br>";
+			//echo $query."<br><br>";
 			mysql_query($query);
-			echo mysql_error()."<br><br>";
+			//echo mysql_error()."<br><br>";
 		}
 
 		$query = "update vendor_processing set deliveryboy='$delivery_boy_name', deliveryboy_contact='$deliveryboy_contact', deliveryboy_id=$delivery_boy_id, device_id='$delivery_device_id', state=2 where orderid=$orderid";
 		$result = mysql_query($query);
-		echo $query;
+		//echo $query;
 		//echo "<br><br>";
 		//echo mysql_error();
 		
@@ -263,7 +263,7 @@ else
 		else
 		{
 			echo "<label class='heading_labels'>Could not mark the order Shipped. Please try again.</label><br><br>";
-			echo mysql_error();
+			//echo mysql_error();
 		}
 	}
 }

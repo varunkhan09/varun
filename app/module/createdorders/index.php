@@ -1029,6 +1029,7 @@
 			text-align:center;
 			border-bottom:3px solid #009ACD;
 			margin:8% 0% 3% 0%;
+			z-index:10;
 		}
 
 		.datepicker

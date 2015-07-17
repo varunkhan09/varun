@@ -617,7 +617,11 @@ else
 						{
 							echo "<b>".$order_information['comments'][$each_comment]['comment']."</b>";
 							echo "&nbsp;";
-							echo "(Added on ".$order_information['comments'][$each_comment]['date'].")";
+							$temp_date = $order_information['comments'][$each_comment]['date'];
+							$temp_date_unix = strtotime($temp_date);
+							$temp_date = date("g:ia, jS M, Y", $temp_date_unix);
+
+							echo "(".$temp_date.")";
 							echo "<br>";
 						}
 						?>
@@ -1080,7 +1084,7 @@ $(document).ready(function(){
 							var array = values[i].split("|");
 							comment = array[0];
 							date = array[1];
-							$('#comments_data').append("<b>"+comment+"</b> (Added on "+date+")<br>");
+							$('#comments_data').prepend("<b>"+comment+"</b> (Added on "+date+")<br>");
 						}
 
 						$("#comment_t").val('');

@@ -3,16 +3,8 @@
 	include $base_path_folder."/app/etc/dbconfig.php";
 	mysql_select_db($custom_database);
 
-	$orderid = $_REQUEST['orderid'];
-
-	$query = "select dod, delivery_type from vendor_processing where orderid=$orderid";
-	$result = mysql_query($query);
-
-	while($row = mysql_fetch_assoc($result))
-	{
-		$delivery_date = $row['dod'];
-		$shippingtype = $row['delivery_type'];
-	}
+	$orderids = $_REQUEST['orderids'];
+	$order_id_array = explode("_", $orderids);
 ?>
 
 <html>
@@ -61,17 +53,42 @@
 
 if(!isset($_REQUEST['flag']))
 {
-?>	
+?>
+	<div id='main_div1' style='float:left; display:inline; width:100%; margin:10px 0px 10px 0px;'>
+		<label class='heading_labels'>
+			You are about to mark <?php echo count($order_id_array)-1; ?> Orders together. Order details are :
+			<br>
+			<?php
+				$counter = 0;
+				foreach($order_id_array as $each_order)
+				{
+					if(!empty($each_order))
+					{
+						echo $each_order;
+						$counter++;
+						if($counter != count($order_id_array)-1)
+						{
+							echo ", ";
+							$query = "select dod from vendor_processing where orderid=$each_order";
+							$result = mysql_query($query);
+							while($row = mysql_fetch_assoc($result))
+							{
+								$delivery_date = $row['dod'];
+							}
+						}
+					}
+				}
+			?>
+		</label>
+	</div>
+
 	<div id='main_div1' style='float:left; display:inline; width:100%; margin:10px 0px 10px 0px;'>
 		<label class='heading_labels'>Please fill the following details to mark the Order Shipped :</label>
 	</div>
 	<div id='main_div2'>
 		<form method='POST' style='margin:0px; padding:0px;' id='to_submit_form'>
-			<label class='data_labels_normal'>Order ID</label> : <label class='data_labels_normal'><?php echo $orderid; ?></label>
-			<br>
+			<input type='hidden' name='orderids' value='<?php echo $orderids; ?>'>
 			<label class='data_labels_normal'>Delivery Date</label> : <label class='data_labels_normal'><?php echo $delivery_date; ?></label>
-			<br>
-			<label class='data_labels_normal'>Delivery Type</label> : <label class='data_labels_normal'><?php echo $shippingtype; ?></label>
 			<br>
 			<label class='data_labels_normal'>Delivery Boy Name</label><sup style='color:red; font-size:12px;'>*</sup> : 
 			<div id='varunkumarisgreat' style='float:inherit; display:inline;'>
@@ -112,12 +129,12 @@ if(!isset($_REQUEST['flag']))
 			<select name='delivery_device' id='delivery_device'>
 			<option value=''>Select</option>
 			<?php
-				$query = "select name, uid from pos_track_device where shop_id = $shop_id";
+				$query = "select name, device_id from pos_shop_order_track where shop_id = $shop_id and is_active=1";
 				$result = mysql_query($query);
 				while($row = mysql_fetch_assoc($result))
 				{
 					$temp_device_name = $row['name'];
-					$temp_device_id = $row['uid'];
+					$temp_device_id = $row['device_id'];
 
 					echo "<option value='$temp_device_id'>$temp_device_name</option>";
 				}
@@ -127,7 +144,7 @@ if(!isset($_REQUEST['flag']))
 			<br>
 			<input type='hidden' name='flag' value='1'>
 			<input type='hidden' name='orderid' value='<?php echo $orderid; ?>'>
-			<input type='button' id='make_order_shop_b' value='Make Order Shipped' class='main_buttons'>
+			<input type='button' id='make_order_shop_b' value='Make Orders Shipped' class='main_buttons'>
 		</form>
 	</div>
 <?php
@@ -136,7 +153,7 @@ else
 {
 	if($_REQUEST['flag'] == "1")
 	{
-		$orderid = $_REQUEST['orderid'];
+		$orderids = $_REQUEST['orderids'];
 		mysql_select_db($custom_database);
 
 		if(isset($_REQUEST['new_delivery_boy']) && $_REQUEST['new_delivery_boy'] == "1")
@@ -188,29 +205,57 @@ else
 			echo mysql_error()."<br><br>";
 		}
 
-		$query = "update vendor_processing set deliveryboy='$delivery_boy_name', deliveryboy_contact='$deliveryboy_contact', deliveryboy_id=$delivery_boy_id, device_id='$delivery_device_id', state=2 where orderid=$orderid";
-		$result = mysql_query($query);
-		echo $query;
+
+
+
+		$all_order_ids_in_a_string = "";
+		foreach($order_id_array as $each_order)
+		{
+			if(!empty($each_order))
+			{
+				$all_order_ids_in_a_string .= $each_order;
+				if($counter != count($order_id_array)-1)
+				{
+					$all_order_ids_in_a_string .= ", ";
+				}
+			}
+
+			if(!empty($each_order))
+			{
+				$query = "update vendor_processing set deliveryboy='$delivery_boy_name', deliveryboy_contact='$deliveryboy_contact', deliveryboy_id=$delivery_boy_id, device_id='$delivery_device_id', state=2 where orderid=$each_order";
+				$result = mysql_query($query);
+			}
+		}
+
+		//echo $query;
 		//echo "<br><br>";
 		//echo mysql_error();
 		
 		if($result)
 		{
-			echo "<label class='heading_labels'>Order has been marked Shipped.</label><br><br>";
+			echo "<label class='heading_labels'>Orders has been marked Shipped.</label><br><br>";
 			?>
 			<script>
-			/* THIS CODE RECORDS THIS OPERATION */
-				$.ajax({
-					type:"POST",
-					url:"<?php echo $base_module_path; ?>/notifications/record_notification.php",
-					data:
-					{
-						notf_type:'order_shipped',
-						shop_id_accepted:'<?php echo $shop_id; ?>',
-						order_id:'<?php echo $orderid; ?>',
-					}
-				});
-			/* THIS CODE RECORDS THIS OPERATION */
+			/* THIS CODE RECORDS THIS OPERATION FOR EACH ORDER ID */
+			var orderids = '<?php echo $orderids; ?>';
+			console.log(orderids);
+			var order_id_array = orderids.split("_");
+			$.each(order_id_array, function(key, value){
+				if(value != "")
+				{
+					$.ajax({
+						type:"POST",
+						url:"<?php echo $base_module_path; ?>/notifications/record_notification.php",
+						data:
+						{
+							notf_type:'order_shipped',
+							shop_id_accepted:'<?php echo $shop_id; ?>',
+							order_id:value,
+						}
+					});
+				}
+			});
+			/* THIS CODE RECORDS THIS OPERATION FOR EACH ORDER ID */
 
 
 

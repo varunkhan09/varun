@@ -1,10 +1,24 @@
 <?php
 	include $_SERVER['DOCUMENT_ROOT']."/app/module/common/header.php";
-	//include "/var/www/varun/app/module/common/header.php";
 ?>
+
+<style>
+	.collapsable_row:hover
+	{
+		cursor:pointer;
+	}
+</style>
 
 	<div class="row add_stock_page_content">
 		<div class="container-fluid text-center">
+			<input type="textbox" id="input_date_t" style="height:31px;" class="datepicker" value=""><span id="calender_icon" class="input-group-addon" style="display:inline; font-size:13px;"><i class="glyphicon glyphicon-th"></i></span>
+			<input type="button" id="load_deduce_stock_details_b" class="buttons" value="Load Stock Details">
+		</div>
+
+		<div id="load_item_details_div" class="container-fluid text-center content_table_division"></div>
+
+
+		<div class="container-fluid text-center" style="margin-top:40px;">
 			<center>
 				<input type="textbox" class="form-control" id="order_id_t" style="width:200px;" placeholder="Enter Order ID">
 			</center>

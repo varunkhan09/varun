@@ -10,11 +10,8 @@ var item_rate_to_unitscale_conversion_array = [];
 var current_row = 1;
 var item_name_dd_html = "";
 var item_rate_dd_html = "";
-
-//alert(root_path+"/app/module/stock/add_stock_backend.php");
-
-//var root_path = "http://192.168.1.137/pratmagento/panel/fast/vendorpanel/fromserver";
-//var root_path = "http://varun.floshowers.com:8882";
+var original_add_stock_serialized = "";
+var add_stock_date = "";
 
 if(this_page_url.indexOf("add_stock.php") >= 0)
 {
@@ -178,12 +175,14 @@ if(this_page_url.indexOf("add_stock.php") >= 0)
 			}
 		});
 
+
 		$(document).on('click', '.remove_item_class_add_stock', function(){
 			var item_selected = $(this).attr("id");
 			var item_selected_array = item_selected.split("_");
 			var row_id = item_selected_array[3];
 			$("#items_table_tr_"+row_id+"_add_stock").remove();
 		});
+
 
 		$(document).on('change', '.item_rate_dd_class_add_stock', function(){
 			var item_selected = $(this).attr("id");
@@ -196,6 +195,7 @@ if(this_page_url.indexOf("add_stock.php") >= 0)
 			}
 		});
 
+
 		$(document).on('click', '#add_more_items_b_add_stock', function(){
 			current_row++;
 			$("#items_table").append("<tr class='table_data_row' id='items_table_tr_"+current_row+"_add_stock'><td><input type='textbox' disabled='disabled' id='item_id_t_"+current_row+"_add_stock'></td><td><input type='text' id='item_name_t2_"+current_row+"_add_stock' data-provide='typeahead' class='item_name_t_class_add_stock'></td><td><input type='textbox' id='item_quantity_"+current_row+"_add_stock'></td><td><select class='form-control' id='item_rate_dd_"+current_row+"_add_stock'>"+item_rate_dd_html+"</select><br><input type='textbox' class='form-control item_rate_value_class_add_stock' id='item_rate_value_"+current_row+"_add_stock' placeholder='Price/Unit Rate'></td><td><label class='normal_black_1' id='current_stock_label_"+current_row+"_add_stock'></label></td><td><input type='button' id='remove_item_b_"+current_row+"_add_stock' class='remove_item_class_add_stock buttons' value='Remove Item'></td></tr>");
@@ -206,6 +206,7 @@ if(this_page_url.indexOf("add_stock.php") >= 0)
 				limit: 10
 			});
 		});
+
 
 		$(document).on('click', '#add_stock_b_add_stock', function(){
 			var local_counter = 1;
@@ -393,16 +394,11 @@ if(this_page_url.indexOf("add_stock.php") >= 0)
 			//alert(string);
 		});
 
+
 		$(document).on('click', '#calender_icon', function(){
 			$("#input_date_t_add_stock").focus();
 		});
 
-
-
-
-		$(document).on('click', '#popopopopopop', function(){
-			$("#dialog_form_varun").dialog();
-		});
 
 		$(document).on('click', '#travelling_form_b', function(){
 			var travelling_charges = $("#travelling_form_t").val();
@@ -441,6 +437,148 @@ if(this_page_url.indexOf("add_stock.php") >= 0)
 					}
 				});
 			}
+		});
+
+
+		$(document).on('click', '#load_stock_details_b', function(){
+			add_stock_date = $("#input_date_t_add_stock").val();
+
+			if(add_stock_date == "")
+			{
+				$("#dialog-confirm-msg").html("Select a Date.");
+					$("#dialog-confirm-msg").dialog({
+						resizable: false,
+						modal: true,
+						title:"Error",
+						height: 175,
+						width: 400,
+						buttons: {
+						"OK": function()
+						{
+							$(this).dialog('close');
+						}
+					}
+				});
+				return;
+			}
+
+			$.ajax({
+				type:"POST",
+				url:"/app/module/stock/add_stock_backend.php",
+				data:
+				{
+					mode:"load_date_items_details",
+					date:add_stock_date
+				},
+
+				success:function(message)
+				{
+					if(message.indexOf("-1|") > -1)
+					{
+						$("#dialog-confirm-msg").html("Could not load item details.");
+							$("#dialog-confirm-msg").dialog({
+								resizable: false,
+								modal: true,
+								title:"Error",
+								height: 175,
+								width: 400,
+								buttons: {
+								"OK": function()
+								{
+									$(this).dialog('close');
+								}
+							}
+						});
+					}
+					else
+					{
+						if(message.indexOf("-2|") > -1)
+						{
+							$("#dialog-confirm-msg").html("There is no addition data for this date.");
+								$("#dialog-confirm-msg").dialog({
+									resizable: false,
+									modal: true,
+									title:"Error",
+									height: 175,
+									width: 400,
+									buttons: {
+									"OK": function()
+									{
+										$(this).dialog('close');
+									}
+								}
+							});
+						}
+						else
+						{
+							$("#load_item_details_div").html(message);
+							$("#load_item_details_div").show();
+							console.log(original_add_stock_serialized);
+						}
+					}
+				}
+			});
+		});
+
+
+		$(document).on('click', '#update_add_stock_b', function(){
+			var updated_add_stock_serialized = $("#edited_added_item_form").serialize();
+			updated_add_stock_serialized = updated_add_stock_serialized.replace(/&/g, ",");
+			console.log(updated_add_stock_serialized);
+
+			$.ajax({
+				type:"POST",
+				url:"stock_edit_backend.php",
+				data:
+				{
+					mode:'update_details',
+					type_of:"add_stock",
+					date:add_stock_date,
+					original_added_item_data:original_add_stock_serialized,
+					edited_added_item_log:updated_add_stock_serialized
+				},
+
+				success:function(message)
+				{
+					if(message.indexOf("-1|") > -1)
+					{
+						$("#dialog-confirm-msg").html("Could not update data.");
+							$("#dialog-confirm-msg").dialog({
+								resizable: false,
+								modal: true,
+								title:"Error",
+								height: 175,
+								width: 400,
+								buttons: {
+								"OK": function()
+								{
+									$(this).dialog('close');
+								}
+							}
+						});
+					}
+					else
+					{
+						if(message.indexOf("+1|") > -1)
+						{
+							$("#dialog-confirm-msg").html("Successfully updated the data.");
+								$("#dialog-confirm-msg").dialog({
+									resizable: false,
+									modal: true,
+									title:"Success",
+									height: 175,
+									width: 400,
+									buttons: {
+									"OK": function()
+									{
+										$(this).dialog('close');
+									}
+								}
+							});
+						}
+					}
+				}
+			});
 		});
 	});
 }

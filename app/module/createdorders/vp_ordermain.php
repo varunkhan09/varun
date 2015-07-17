@@ -752,13 +752,13 @@ else
 				<div id='main_div5point2' class='main_divs'>
 					<div style='display:inline; float:left; width:50%; margin:2px 0px 0px 0px;'>
 					<?php
-						$order_comments=Mage::getModel('onestepcheckout/onestepcheckout')->getCollection()->addFieldToFilter('sales_order_id',$order->getEntityId());
-						foreach($order_comments as $each_comment)
+						//$order_comments=Mage::getModel('onestepcheckout/onestepcheckout')->getCollection()->addFieldToFilter('sales_order_id',$order->getEntityId());
+						//foreach($order_comments as $each_comment)
 						{
-							$temp_special_instructions = $each_comment->getMwCustomercommentInfo();
-							$temp_special_instructions = nl2br($temp_special_instructions);
-							echo "<label class='data_labels_normal'>".$temp_special_instructions."</label>";
-							echo "<br>";
+							//$temp_special_instructions = $each_comment->getMwCustomercommentInfo();
+							//$temp_special_instructions = nl2br($temp_special_instructions);
+							//echo "<label class='data_labels_normal'>".$temp_special_instructions."</label>";
+							//echo "<br>";
 						}
 					?>
 					</div>
@@ -1374,7 +1374,7 @@ $(document).ready(function(){
 							var array = values[i].split("|");
 							comment = array[0];
 							date = array[1];
-							$('#comments_data').prepend("<b>"+comment+"</b> ("+date+")<br>");
+							$('#comments_data').prepend("<b>"+comment+"</b> (Added on "+date+")<br>");
 						}
 
 						$("#comment_t").val('');

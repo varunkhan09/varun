@@ -163,11 +163,10 @@
 
 		case "update_details":
 		{
-			var_dump();
 			$temp_date = $_REQUEST['date'];
 			$temp_date_unix = strtotime($temp_date);
 			$temp_date_final = date("Y-m-d", $temp_date_unix);
-			$temp_date_final_with_zeros .= " 00:00:00";
+			$temp_date_final_with_zeros = $temp_date_final." 00:00:00";
 
 			$type_of = $_REQUEST['type_of'];
 			switch($type_of)
@@ -187,9 +186,55 @@
 						//echo mysql_error();
 					}
 
-					$query_insert = "insert into pos_stock_edit_log (shop_id, previous_item_log, edited_item_log, updated_for_date) values ($shop_id, '$original_added_item_data', '$edited_added_item_log', 'add_stock', '$temp_date_final')";
+					$query_insert = "insert into pos_stock_edit_log (shop_id, previous_item_log, edited_item_log, updated_stock, updated_for_date) values ($shop_id, '$original_added_item_data', '$edited_added_item_log', 'add_stock', '$temp_date_final')";
 					break;
 				}
+
+
+				case "wastage_stock":
+				{
+					$original_wasted_item_data = $_REQUEST['original_wasted_item_data'];
+					$edited_wasted_item_log = $_REQUEST['edited_wasted_item_log'];
+
+					$edited_wastage_item_log_array = explode(",", $edited_wasted_item_log);
+					foreach($edited_wastage_item_log_array as $each_wasted_item)
+					{
+						$temp_each_item_entry_array = explode("=", $each_wasted_item);
+						$query_update = "update pos_stock_wastage_entity set item_unitscale_quantity = ".$temp_each_item_entry_array[1].", item_quantity = ".$temp_each_item_entry_array[1]." where item_id=".$temp_each_item_entry_array[0]." and shop_id=$shop_id and created_at like '$temp_date_final%'";
+						//echo $query_update."<br>";
+						mysql_query($query_update);
+						//echo mysql_error();
+					}
+
+					$query_insert = "insert into pos_stock_edit_log (shop_id, previous_item_log, edited_item_log, updated_stock, updated_for_date) values ($shop_id, '$original_wasted_item_data', '$edited_wasted_item_log', 'wastage_stock', '$temp_date_final_with_zeros')";
+					echo $query_insert;
+					break;
+				}
+
+
+
+				case "deduce_stock":
+				{
+					$original_deduced_item_data = $_REQUEST['original_deduced_item_data'];
+					$edited_deduced_item_log = $_REQUEST['edited_deduced_item_log'];
+
+					$edited_deduce_item_log_array = explode(",", $edited_deduced_item_log);
+					foreach($edited_deduce_item_log_array as $each_deduced_item)
+					{
+						$temp_each_order_and_item_entry_array = explode("=", $each_deduced_item);
+						$temp_each_item_entry_array = explode("_", $temp_each_order_and_item_entry_array[0]);
+						$query_update = "update pos_stock_deduced_entity set item_quantity = ".$temp_each_order_and_item_entry_array[1]." where order_id = ".$temp_each_item_entry_array[0]." and item_id=".$temp_each_item_entry_array[1]." and shop_id=$shop_id and created_at like '$temp_date_final%'";
+						echo $query_update."<br>";
+						mysql_query($query_update);
+						//echo mysql_error();
+					}
+
+					$query_insert = "insert into pos_stock_edit_log (shop_id, previous_item_log, edited_item_log, updated_stock, updated_for_date) values ($shop_id, '$original_deduced_item_data', '$edited_deduced_item_log', 'deduce_stock', '$temp_date_final_with_zeros')";
+					echo $query_insert;
+
+					break;
+				}
+
 
 				default:
 				{
@@ -200,7 +245,6 @@
 
 
 			$result_insert = mysql_query($query_insert);
-
 			if($result_insert)
 			{
 				echo "+1|";
@@ -210,35 +254,6 @@
 				echo "-1|";
 			}
 			break;
-/*
-			$original_wasted_item_data = $_REQUEST['original_wasted_item_data'];
-			$edited_wasted_item_data = $_REQUEST['edited_wasted_item_data'];
-
-			$original_deduced_item_data = $_REQUEST['original_deduced_item_data'];
-			$edited_deduced_item_data = $_REQUEST['edited_deduced_item_data'];
-*/
-
-
-/*
-			$query = "insert into pos_stock_edit_log (shop_id, previous_item_log, edited_item_log, updated_stock, updated_for_date) values ";
-			if(!empty($original_added_item_data) && !empty($edited_added_item_log))
-			{
-				$query .= "($shop_id, '$original_added_item_data', '$edited_added_item_log', 'add_stock', '$temp_date_final'), ";
-			}
-*/
-
-
-/*
-			if(!empty($original_wasted_item_data) && !empty($edited_wasted_item_data))
-			{
-				$query .= "($shop_id, '$original_wasted_item_data', '$edited_wasted_item_data', 'wastage_stock', '$temp_date_final'), ";
-			}
-
-			if(!empty($original_deduced_item_data) && !empty($edited_deduced_item_data))
-			{
-				$query .= "($shop_id, '$original_deduced_item_data', '$edited_deduced_item_data', 'deduce_stock', '$temp_date_final'), ";
-			}
-*/
 		}
 
 

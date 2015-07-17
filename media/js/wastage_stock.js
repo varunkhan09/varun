@@ -6,13 +6,12 @@ var item_name_array = [];
 var item_rate_name_array = [];
 var item_name_id_array = [];
 var item_rate_to_unitscale_conversion_array = [];
+var add_stock_date = "";
+var original_wastage_stock_serialized = "";
 
 var current_row = 1;
 var item_name_dd_html = "";
 var item_rate_dd_html = "";
-
-//var root_path = "http://192.168.1.137/pratmagento/panel/fast/vendorpanel/fromserver";
-//var root_path = "http://varun.floshowers.com:8882";
 
 if(this_page_url.indexOf("wastage_stock.php") >= 0)
 {
@@ -336,6 +335,149 @@ if(this_page_url.indexOf("wastage_stock.php") >= 0)
 
 		$(document).on('click', '#calender_icon', function(){
 			$("#input_date_t").focus();
+		});
+
+
+		$(document).on('click', '#load_wastage_stock_details_b', function(){
+			add_stock_date = $("#input_date_t").val();
+
+			if(add_stock_date == "")
+			{
+				$("#dialog-confirm-msg").html("Select a Date.");
+					$("#dialog-confirm-msg").dialog({
+						resizable: false,
+						modal: true,
+						title:"Error",
+						height: 175,
+						width: 400,
+						buttons: {
+						"OK": function()
+						{
+							$(this).dialog('close');
+							$("#input_date_t").focus();
+						}
+					}
+				});
+				return;
+			}
+
+			$.ajax({
+				type:"POST",
+				url:"/app/module/stock/wastage_stock_backend.php",
+				data:
+				{
+					mode:"load_date_items_details",
+					date:add_stock_date
+				},
+
+				success:function(message)
+				{
+					if(message.indexOf("-1|") > -1)
+					{
+						$("#dialog-confirm-msg").html("Could not load item details.");
+							$("#dialog-confirm-msg").dialog({
+								resizable: false,
+								modal: true,
+								title:"Error",
+								height: 175,
+								width: 400,
+								buttons: {
+								"OK": function()
+								{
+									$(this).dialog('close');
+								}
+							}
+						});
+					}
+					else
+					{
+						if(message.indexOf("-2|") > -1)
+						{
+							$("#dialog-confirm-msg").html("There is no wastage data for this date.");
+								$("#dialog-confirm-msg").dialog({
+									resizable: false,
+									modal: true,
+									title:"Error",
+									height: 175,
+									width: 400,
+									buttons: {
+									"OK": function()
+									{
+										$(this).dialog('close');
+									}
+								}
+							});
+						}
+						else
+						{
+							$("#load_item_details_div").html(message);
+							$("#load_item_details_div").show();
+							console.log(original_add_stock_serialized);
+						}
+					}
+				}
+			});
+		});
+
+
+		$(document).on('click', '#update_wastage_stock_b', function(){
+			var updated_wasted_stock_serialized = $("#edited_wasted_item_form").serialize();
+			updated_wasted_stock_serialized = updated_wasted_stock_serialized.replace(/&/g, ",");
+			console.log(updated_wasted_stock_serialized);
+
+			$.ajax({
+				type:"POST",
+				url:"stock_edit_backend.php",
+				data:
+				{
+					mode:'update_details',
+					type_of:"wastage_stock",
+					date:add_stock_date,
+					original_wasted_item_data:original_wastage_stock_serialized,
+					edited_wasted_item_log:updated_wasted_stock_serialized
+				},
+
+				success:function(message)
+				{
+					if(message.indexOf("-1|") > -1)
+					{
+						$("#dialog-confirm-msg").html("Could not update data.");
+							$("#dialog-confirm-msg").dialog({
+								resizable: false,
+								modal: true,
+								title:"Error",
+								height: 175,
+								width: 400,
+								buttons: {
+								"OK": function()
+								{
+									$(this).dialog('close');
+								}
+							}
+						});
+					}
+					else
+					{
+						if(message.indexOf("+1|") > -1)
+						{
+							$("#dialog-confirm-msg").html("Successfully updated the data.");
+								$("#dialog-confirm-msg").dialog({
+									resizable: false,
+									modal: true,
+									title:"Success",
+									height: 175,
+									width: 400,
+									buttons: {
+									"OK": function()
+									{
+										$(this).dialog('close');
+									}
+								}
+							});
+						}
+					}
+				}
+			});
 		});
 	});
 }

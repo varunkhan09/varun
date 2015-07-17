@@ -17,7 +17,6 @@
 		{
 			$temp_comment = $each_comment->getComment();
 			$temp_date =  $each_comment->getCreatedAt();
-			$string .= $temp_comment."|".$temp_date."<>";
 			$temp_date_unix = strtotime($temp_date);
 			$temp_date = date("g:ia, jS M, Y", $temp_date_unix);
 			$string .= $temp_comment."|".$temp_date."<>";

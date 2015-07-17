@@ -67,6 +67,7 @@
 	//border:3px solid black;
 	//background-color:red;
 	width:1200px;
+	z-index:9;
 }
 
 .order_products_table
@@ -118,6 +119,7 @@
 	text-align:center;
 	border-bottom:3px solid #009ACD;
 	margin:0% 0% 3% 0%;
+	z-index:10;
 }
 
 .datepicker

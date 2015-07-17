@@ -89,14 +89,14 @@ else
 
 		$query = "update vendor_processing set delivery_time='$delivery_time', delivery_name='$delivery_name', state=3 where orderid=$orderid";
 		$result = mysql_query($query);
-		echo mysql_error();
+		//echo mysql_error();
 
 
 		/* THIS CODE IS ADDED TO DEDUCT ITEM STOCK FROM VENDOR WHO DELIVERED THIS ORDER */
 			$query = "select shop_id_created, productid, productquantity, productsku, dod from panelorderdetails where orderid=$orderid";
 			$result = mysql_query($query);
-			echo "<br>".$query;
-			echo "<br>".mysql_error();
+			//echo "<br>".$query;
+			//echo "<br>".mysql_error();
 			$ordered_product_details = array();
 			mysql_select_db($vendorshop_database);
 			while($row = mysql_fetch_assoc($result))
@@ -107,24 +107,24 @@ else
 				$temp_product_sku = $row['productsku'];
 				$temp_dod = $row['dod'];
 
-				echo "<br><br><br><br>";
-				print_r($row);
-				echo "<br>";
+				//echo "<br><br><br><br>";
+				//print_r($row);
+				//echo "<br>";
 
 				if(strpos($temp_product_sku, "custom:") !== false) 											//This product is a Custom Product...
 				{
-					echo "It is Custom Product<br>";
+					//echo "It is Custom Product<br>";
 					//$query_inner = "select item_id, item_quantity from pos_order_items_entity where order_id=$orderid and product_id=$temp_product_id";
 					$query_inner = "select item_id, item_quantity from pos_order_items_entity where shop_id=$attendant_shop_id and order_id=$orderid and product_id=$temp_product_id";
 					$result_inner = mysql_query($query_inner);
-					echo "<br>".$query_inner;
-					echo "<br>".mysql_error()."<br><br>";
+					//echo "<br>".$query_inner;
+					//echo "<br>".mysql_error()."<br><br>";
 
 					while($row_inner = mysql_fetch_assoc($result_inner))
 					{
-						echo "<br>";
-						print_r($row_inner);
-						echo "<br>";
+						//echo "<br>";
+						//print_r($row_inner);
+						//echo "<br>";
 
 						$temp_item_id = $row_inner['item_id'];
 						$temp_item_quantity = $row_inner['item_quantity'];
@@ -143,17 +143,17 @@ else
 				}
 				else 																						//This product is a Normal Product...
 				{
-					echo "It is Normal Product<br>";
+					//echo "It is Normal Product<br>";
 					$query_inner = "select item_id, item_quantity from pos_products_item_details where product_id=$temp_product_id";
 					$result_inner = mysql_query($query_inner);
-					echo "<br>".$query_inner;
-					echo "<br>".mysql_error()."<br><br>";
+					//echo "<br>".$query_inner;
+					//echo "<br>".mysql_error()."<br><br>";
 
 					while($row_inner = mysql_fetch_assoc($result_inner))
 					{
-						echo "<br>";
-						print_r($row_inner);
-						echo "<br>";
+						//echo "<br>";
+						//print_r($row_inner);
+						//echo "<br>";
 
 						$temp_item_id = $row_inner['item_id'];
 						$temp_item_quantity = $row_inner['item_quantity'];
@@ -171,9 +171,9 @@ else
 					}
 				}
 			}
-			echo "<br><br><br>";
-			var_dump($deduction_array);
-			echo "<br><br>";
+			//echo "<br><br><br>";
+			//var_dump($deduction_array);
+			//echo "<br><br>";
 
 			$temp_dod_final = $temp_dod." 00:00:00";
 
@@ -182,7 +182,7 @@ else
 			foreach($varun as $each_item)
 			{
 				$query = "update pos_stock_entity set item_quantity=item_quantity-".$deduction_array[$each_item]." where item_id=$each_item and shop_id=$shop_id";
-				echo $query."<br>";
+				//echo $query."<br>";
 				$query_inner2 .= "($attendant_shop_id, $orderid, $each_item, ".$deduction_array[$each_item].", '$temp_dod_final'), ";
 				mysql_query($query);
 			}

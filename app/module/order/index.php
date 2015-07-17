@@ -88,6 +88,7 @@
 
 <script>
 	var vendor_id = '<?php echo $shop_id; ?>';
+	var checked_array_multiple_shipping = "";
 	var query_array = [];
 	var query_counter = 0;
 	var query = "select distinct orderid from vendor_processing where (vendor_id="+vendor_id+") and (state = NULL OR state = 0)";
@@ -399,108 +400,10 @@
 			if(class_array[0] == "main_buttons_red")
 			{
 				$(".main_buttons_red").fancybox({
-				width		: '670px',
-				height		: '380px',
-				autoSize	: false,
-				closeClick	: false,
-
-				afterClose: function()
-				{
-					$("#loading_div").show();
-					$('body').attr('disabled', 'disabled');
-					$.ajax({
-						type:'POST',
-						url:'vp_checkstate.php',
-						data:
-						{
-							orderid:order_id_hidden
-						},
-
-						success:function(message)
-						{
-							if(message == "\n\n0")
-							{
-								$("#activity_b_"+starter[2]).val("Accept Order");
-								$("#activity_b_"+starter[2]).attr("class", "main_buttons_red varun");
-							}
-							else
-							{
-								if(message == "\n\n1")
-								{
-									/* THIS CODE RECORDS THIS OPERATION */
-									$.ajax({
-										type:"POST",
-										url:"vp_recordoperations.php",
-										data:
-										{
-											orderid:order_id_hidden,
-											comment_type:"2"
-										}
-									});
-									/* THIS CODE RECORDS THIS OPERATION */
-
-
-									/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
-									$.ajax({
-										type:"POST",
-										url:"vp_recordnotifications.php",
-										data:
-										{
-											orderid:order_id_hidden,
-											notification_type:"2",
-											username:'',
-											vendor_id:<?php echo $vendor_id; ?>
-										}
-									});
-									/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
-
-
-									$("#activity_b_"+starter[2]).val("Ship Order");
-									$("#activity_b_"+starter[2]).attr("class", "main_buttons_yellow varun");
-									$("#activity_b_"+starter[2]).attr("href", 'vp_ship.php?orderid='+order_id_hidden);
-								}
-								else
-								{
-									if(message == "\n\n2")
-									{
-										$("#activity_b_"+starter[2]).val("Order Delivered");
-										$("#activity_b_"+starter[2]).attr("class", "main_buttons_green varun");
-										$("#activity_b_"+starter[2]).attr("href", 'vp_delivered.php?orderid='+order_id_hidden);
-									}
-									else
-									{
-										if(message == "\n\n3")
-										{
-											$("#activity_b_"+starter[2]).hide();
-										}
-										else
-										{
-											if(message == "\n\n-1")
-											{
-												alert("Some error has occurred while performing operation.");
-											}
-										}
-									}
-								}
-							}
-						}
-					});
-					$("#loading_div").hide();
-					$('body').removeAttr("disabled");
-				}
-			});
-			}
-
-			else
-			{
-				if(class_array[0] ==  "main_buttons_yellow")
-				{
-					$(".main_buttons_yellow").fancybox({
 					width		: '670px',
-					height		: '280px',
+					height		: '380px',
 					autoSize	: false,
 					closeClick	: false,
-
 					afterClose: function()
 					{
 						$("#loading_div").show();
@@ -524,6 +427,34 @@
 								{
 									if(message == "\n\n1")
 									{
+										/* THIS CODE RECORDS THIS OPERATION */
+										$.ajax({
+											type:"POST",
+											url:"vp_recordoperations.php",
+											data:
+											{
+												orderid:order_id_hidden,
+												comment_type:"2"
+											}
+										});
+										/* THIS CODE RECORDS THIS OPERATION */
+
+
+										/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+										$.ajax({
+											type:"POST",
+											url:"vp_recordnotifications.php",
+											data:
+											{
+												orderid:order_id_hidden,
+												notification_type:"2",
+												username:'',
+												vendor_id:<?php echo $vendor_id; ?>
+											}
+										});
+										/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+
+
 										$("#activity_b_"+starter[2]).val("Ship Order");
 										$("#activity_b_"+starter[2]).attr("class", "main_buttons_yellow varun");
 										$("#activity_b_"+starter[2]).attr("href", 'vp_ship.php?orderid='+order_id_hidden);
@@ -532,33 +463,6 @@
 									{
 										if(message == "\n\n2")
 										{
-											/* THIS CODE RECORDS THIS OPERATION */
-											$.ajax({
-												type:"POST",
-												url:"vp_recordoperations.php",
-												data:
-												{
-													orderid:order_id_hidden,
-													comment_type:"3"
-												}
-											});
-											/* THIS CODE RECORDS THIS OPERATION */
-
-											/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
-											$.ajax({
-												type:"POST",
-												url:"vp_recordnotifications.php",
-												data:
-												{
-													orderid:order_id_hidden,
-													notification_type:"3",
-													username:'',
-													vendor_id:<?php echo $vendor_id; ?>
-												}
-											});
-											/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
-
-
 											$("#activity_b_"+starter[2]).val("Order Delivered");
 											$("#activity_b_"+starter[2]).attr("class", "main_buttons_green varun");
 											$("#activity_b_"+starter[2]).attr("href", 'vp_delivered.php?orderid='+order_id_hidden);
@@ -585,8 +489,103 @@
 						$('body').removeAttr("disabled");
 					}
 				});
-				}
+			}
+			else
+			{
+				if(class_array[0] ==  "main_buttons_yellow")
+				{
+					$(".main_buttons_yellow").fancybox({
+						width		: '670px',
+						height		: '300px',
+						autoSize	: false,
+						closeClick	: false,
+						live		: false,
+	
+						afterClose: function()
+						{
+							$("#loading_div").show();
+							$('body').attr('disabled', 'disabled');
+							$.ajax({
+								type:'POST',
+								url:'vp_checkstate.php',
+								data:
+								{
+									orderid:order_id_hidden
+								},
 
+								success:function(message)
+								{
+									if(message == "\n\n0")
+									{
+										$("#activity_b_"+starter[2]).val("Accept Order");
+										$("#activity_b_"+starter[2]).attr("class", "main_buttons_red varun");
+									}
+									else
+									{
+										if(message == "\n\n1")
+										{
+											$("#activity_b_"+starter[2]).val("Ship Order");
+											$("#activity_b_"+starter[2]).attr("class", "main_buttons_yellow varun");
+											$("#activity_b_"+starter[2]).attr("href", 'vp_ship.php?orderid='+order_id_hidden);
+										}
+										else
+										{
+											if(message == "\n\n2")
+											{
+												/* THIS CODE RECORDS THIS OPERATION */
+												$.ajax({
+													type:"POST",
+													url:"vp_recordoperations.php",
+													data:
+													{
+														orderid:order_id_hidden,
+														comment_type:"3"
+													}
+												});
+												/* THIS CODE RECORDS THIS OPERATION */
+
+												/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+												$.ajax({
+													type:"POST",
+													url:"vp_recordnotifications.php",
+													data:
+													{
+														orderid:order_id_hidden,
+														notification_type:"3",
+														username:'',
+														vendor_id:<?php echo $vendor_id; ?>
+													}
+												});
+												/* THIS CODE RECORDS THIS OPERATION IN NOTIFICATIONS */
+
+
+												$("#activity_b_"+starter[2]).val("Order Delivered");
+												$("#activity_b_"+starter[2]).attr("class", "main_buttons_green varun");
+												$("#activity_b_"+starter[2]).attr("href", 'vp_delivered.php?orderid='+order_id_hidden);
+											}
+											else
+											{
+												if(message == "\n\n3")
+												{
+													$("#activity_b_"+starter[2]).hide();
+												}
+												else
+												{
+													if(message == "\n\n-1")
+													{
+														alert("Some error has occurred while performing operation.");
+													}
+												}
+											}
+										}
+									}
+								}
+							});
+							$("#loading_div").hide();
+							$('body').removeAttr("disabled");
+						}
+					});
+				}
 				else
 				{
 					if(class_array[0] == "main_buttons_green")
@@ -698,8 +697,65 @@
 	});
 
 
+
+	$(document).ready(function(){
+		$(document).on('click', '#multiple_shipping_button', function(){
+			console.log("Previous Query String : "+checked_array_multiple_shipping);
+			exit_now = false;
+			checked_array_multiple_shipping = "";
+			$(".print_ch").each(function(){
+				if($(this).prop('checked') == true)
+				{
+					var temp_order = $(this).attr("id");
+
+					var temp_array = temp_order.split("_");
+					var temp_row_counter = temp_array[2];
+					//var this_order_state_class = $("#activity_b_"+temp_row_counter).attr("class");
+					//console.log(this_order_state_class);
+					if($("#activity_b_"+temp_row_counter).hasClass("main_buttons_yellow"))
+					{
+						checked_array_multiple_shipping += temp_array[1]+"_";
+					}
+					else
+					{
+						alert(temp_array[1]+" is not ready for shipping. Please de-select this order.");
+						exit_now = true;
+						return;
+					}
+				}
+			});
+
+			if(exit_now)
+			{
+				return;
+			}
+			else
+			{
+				if(checked_array_multiple_shipping.length != 0)
+				{
+					$("#multiple_shipping_button").fancybox({
+						width		: '670px',
+						height		: '380px',
+						autoSize	: false,
+						closeClick	: false,
+						href		: "vp_ship_multiple.php?orderids="+checked_array_multiple_shipping,
+						
+						/*afterClose: function()
+						{
+							
+						}*/
+					});
+				}
+				else
+				{
+					alert("Select at least one order to multiple ship it.");
+				}
+			}
+		});
+	});
+
+
 	window.onpopstate = function(event){
-		console.log();
 		$.ajax({
 			type:"POST",
 			url:"vp_vendormain_queryexecuter.php",

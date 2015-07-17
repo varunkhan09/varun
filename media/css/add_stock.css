@@ -98,3 +98,14 @@
 {
 	cursor:pointer;
 }
+
+#load_item_details_div
+{
+	display:none;
+	margin-bottom:50px;
+}
+
+.each_item_stock_textbox
+{
+	width:60px;
+}
